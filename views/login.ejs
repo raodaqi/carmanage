@@ -15,8 +15,9 @@
   .content{
     width: 100%;
     height: 100%;
-    background: url("/img/bg.jpg");
+    /*background: url("/img/bg.jpg");*/
     background-size: auto 100%;
+    background-image: linear-gradient(15deg, #013d5f 0%, #8dbcce 100%);
   }
   .login-content,.signup-content{
     width: 80%;
@@ -76,10 +77,11 @@
     </div>
   </div>
 
-  <script src="http://www.swiper.com.cn/templets/default/js/jquery-1.10.1.min.js"></script>
-  <script src="/js/swiper.min.js"></script>
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/layer/mobile/layer.js"></script>
   <script type="text/javascript" src="http://apimanage.leanapp.cn/api/link?app_id=58f369a3a0bb9f006a9e2e2a"> </script>
-  <script>        
+  <script> 
+
     $(".do-left").on("click",function(){
       //判断是登录还是注册
       var text = $(this).text();
@@ -99,12 +101,28 @@
     })
 
     $(".btn-create").on("click",function(){
+      layer.open({
+        type: 2,
+        content: '正在登录'
+      });
       var data = $("#loginForm").serializeArray();
       userLogin(data,{
         success:function(result){
-          console.log(result);
+          layer.closeAll()
+          //提示
+          layer.open({
+            content: '登录成功'
+            ,skin: 'msg'
+            ,time: 2 //2秒后自动关闭
+          });
         },
         error:function(error){
+          layer.closeAll();
+          layer.open({
+            content: error.message
+            ,skin: 'msg'
+            ,time: 2 //2秒后自动关闭
+          });
           console.log(error);
         }
       })
@@ -112,11 +130,27 @@
 
     $(".btn-signup").on("click",function(){
       var data = $("#signupForm").serializeArray();
+      layer.open({
+        type: 2,
+        content: '正在注册'
+      });
       userSignup(data,{
         success:function(result){
-          console.log(result);
+          layer.closeAll()
+          //提示
+          layer.open({
+            content: '注册成功'
+            ,skin: 'msg'
+            ,time: 2 //2秒后自动关闭
+          });
         },
         error:function(error){
+          layer.closeAll();
+          layer.open({
+            content: error.message
+            ,skin: 'msg'
+            ,time: 2 //2秒后自动关闭
+          });
           console.log(error);
         }
       })
