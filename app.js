@@ -5,6 +5,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var AV = require('leanengine');
+var LCT = require('lc-build');
+var LCT = require('lc-build');
+var LCT = new LCT({
+  path:"routes/car.js",
+  name:"car"
+})
+// LCT.build();
 
 // 加载云函数定义，你可以将云函数拆分到多个文件方便管理，但需要在主文件中加载它们
 require('./cloud');
@@ -35,8 +42,13 @@ app.get('/', function(req, res) {
   res.render('index', { currentTime: new Date() });
 });
 
+app.get('/login', function(req, res) {
+  res.render('login', { currentTime: new Date() });
+});
+
 // 可以将一类的路由单独保存在一个文件中
-app.use('/todos', require('./routes/todos'));
+app.use('/car', require('./routes/car'));
+app.use('/user', require('./routes/user'));
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
