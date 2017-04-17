@@ -54,7 +54,7 @@
 </style>
 <body>
   <div class="do-nav">
-    <div class="name cssa16253a7b2bf4">福特 &bull; 进无止境</div>
+    <a href="/"><div class="name cssa16253a7b2bf4">福特 &bull; 进无止境</div></a>
     <div class="do-left">注册</div>
   </div>
   
@@ -106,17 +106,15 @@
         content: '正在登录'
       });
       var data = $("#loginForm").serializeArray();
-      userLogin(data,{
-        success:function(result){
-          layer.closeAll()
+      userLogin(data).then(function(result){
+          layer.closeAll();
           //提示
           layer.open({
             content: '登录成功'
             ,skin: 'msg'
             ,time: 2 //2秒后自动关闭
           });
-        },
-        error:function(error){
+        },function(error){
           layer.closeAll();
           layer.open({
             content: error.message
@@ -124,7 +122,6 @@
             ,time: 2 //2秒后自动关闭
           });
           console.log(error);
-        }
       })
     })
 
@@ -134,8 +131,7 @@
         type: 2,
         content: '正在注册'
       });
-      userSignup(data,{
-        success:function(result){
+      userSignup(data).then(function(result){
           layer.closeAll()
           //提示
           layer.open({
@@ -143,8 +139,7 @@
             ,skin: 'msg'
             ,time: 2 //2秒后自动关闭
           });
-        },
-        error:function(error){
+        },function(error){
           layer.closeAll();
           layer.open({
             content: error.message
@@ -152,7 +147,6 @@
             ,time: 2 //2秒后自动关闭
           });
           console.log(error);
-        }
       })
     })
   </script>
