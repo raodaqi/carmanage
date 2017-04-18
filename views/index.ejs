@@ -68,15 +68,47 @@
     color: white;
     font-style: normal;
   }
+  .do-content{
+    top: 0;
+    position: absolute;
+    height: 100%;
+    width:100%;
+    /*transform:translateX(100%);*/
+    z-index: 2;
+    -webkit-transition: all ease 500ms;
+    transition: all ease 500ms;
+    background: #4D4D52;
+  }
+  .conpany-content,.help-content{
+    transform:translateX(100%);
+  }
+
+  .help-content{
+    /*transform:translateX(-100%);*/
+  }
+  .back{
+    font-size: 20px;
+  }
+  .do-title{
+    padding-left: 20px;
+    margin: 20px 0;
+    font-size: 20px;
+    color:#b5b5b5;
+  }
+  .do-text-content{
+    padding:0 20px;
+    font-size: 14px;
+    color: #fffcf5;
+    line-height: 26px;
+  }
 </style>
 <body>
   <!-- <div id="particles-js"></div> -->
-  <div class="do-nav">
-    <div class="name cssa16253a7b2bf4">福特 &bull; 进无止境</div>
-    <a href="login"><div class="iconfont icon-user"></div></a>
-  </div>
-
   <div class="swiper-container">
+    <div class="do-nav">
+      <div class="name cssa16253a7b2bf4">福特 &bull; 进无止境</div>
+      <a href="login"><div class="iconfont icon-user"></div></a>
+    </div>
     <div class="swiper-wrapper">
       <div class="swiper-slide company">
         <!-- 公司介绍 -->
@@ -94,7 +126,7 @@
         <div class="menu-wrapper">
             <ul class="menu-items">
               <li class="menu-item">
-                <button class="menu-item-button">
+                <button class="menu-item-button company-btn">
                   <i class="menu-item-icon">
                     公司介绍
                   </i>
@@ -111,14 +143,16 @@
               </li>
               <li class="menu-item">
                 <button class="menu-item-button">
-                  <i class="menu-item-icon">
-                    联系我们
-                  </i>
+                  <a href="tel:18408251157">
+                    <i class="menu-item-icon">
+                      联系我们
+                    </i>
+                  </a>
                 </button>
                 <div class="menu-item-bounce"></div>
               </li>
               <li class="menu-item">
-                <button class="menu-item-button">
+                <button class="menu-item-button help-btn">
                   <i class="menu-item-icon">
                     帮助与支持
                   </i>
@@ -131,12 +165,27 @@
             </button>
           </div>
       </div>
-      <div class="swiper-slide">
-        
-      </div>
     </div>
     <!-- 如果需要分页器 -->
     <div class="swiper-pagination"></div>
+
+    <!-- 公司简介 -->
+    <div class="do-content conpany-content">
+      <a class="codrops-icon codrops-icon--prev back company-back"></a>
+      <div class="do-box company-box">
+        <div class="do-title company-title">公司简介：</div>
+        <div class="do-text-content company-text-content">福特是世界著名的汽车品牌，为美国福特汽车公司旗下的众多品牌之一，公司及品牌名“福特”来源于创始人亨利·福特的姓氏。福特汽车公司是世界上最大的汽车生产商之一，成立于1903年，旗下拥有福特和林肯汽车品牌，总部位于密歇根州 迪尔伯恩市。除了制造汽车，公司还设有金融服务部门即福特信贷，主要经营购车金融、车辆租赁和汽车保险方面的业务。</div>
+      </div>
+    </div>
+
+    <!-- 帮助与支持 -->
+    <div class="do-content help-content">
+      <a class="codrops-icon codrops-icon--prev back help-back"></a>
+      <div class="do-box help-box">
+        <div class="do-title help-title">帮助与支持：</div>
+        <div class="do-text-content help-content">福特是世界著名的汽车品牌，为美国福特汽车公司旗下的众多品牌之一，公司及品牌名“福特”来源于创始人亨利·福特的姓氏。福特汽车公司是世界上最大的汽车生产商之一，成立于1903年，旗下拥有福特和林肯汽车品牌，总部位于密歇根州 迪尔伯恩市。除了制造汽车，公司还设有金融服务部门即福特信贷，主要经营购车金融、车辆租赁和汽车保险方面的业务。</div>
+      </div>
+    </div>
   </div>
   <!-- <script src="http://www.swiper.com.cn/templets/default/js/jquery-1.10.1.min.js"></script> -->
   <script src="/js/jquery-3.2.1.min.js"></script>
@@ -153,6 +202,30 @@
     
   //   effect : 'cube',
   // })
+
+  $(".company-btn").on("touchstart",function(){
+    $(".conpany-content").css({
+      "transform" : "translateX(0%)"
+    })
+  })
+
+  $(".help-btn").on("touchstart",function(){
+    $(".help-content").css({
+      "transform" : "translateX(0%)"
+    })
+  })
+
+  $(".company-back").on("click",function(){
+    $(".conpany-content").css({
+      "transform" : "translateX(100%)"
+    })
+  })
+
+  $(".help-back").on("click",function(){
+    $(".help-content").css({
+      "transform" : "translateX(100%)"
+    })
+  })
 
 
   function fixPagesHeight() {

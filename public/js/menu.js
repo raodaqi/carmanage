@@ -29,8 +29,8 @@ $(document).ready(function(){
 	$(document).on("touchend",function(){
 		$(document).trigger("mouseup")
 	})
-	$(".menu-toggle-button").on("mousedown",pressHandler);
-	$(".menu-toggle-button").on("touchstart",function(event){
+	$(".menu-toggle-button,.menu-item-button").on("mousedown",pressHandler);
+	$(".menu-toggle-button,.menu-item-button").on("touchstart",function(event){
 		$(this).trigger("mousedown");
 		event.preventDefault();
 		event.stopPropagation();

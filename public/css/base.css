@@ -41,7 +41,7 @@ a {
 a:hover,
 a:focus,
 .codrops-demos a.current-demo {
-	color: #eab1c6;
+	/*color: #eab1c6;*/
 	outline: none;
 }
 
