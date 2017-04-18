@@ -16,95 +16,53 @@
 </head>
 <style>
   body{
-    background: #4D4D52;
+    background: #eeeeef;
   }
-  .company,.nav{
-    background: url("/img/bg.jpg");
-    background-size: 100% 100%;
-  }
-  .icon-user{
-    position: absolute;
-    font-size: 18px;
-    top:18px;
-    right:20px;
-    color: white;
-  }
-  .indro{
-    width: 80%;
-    max-width: 300px;
-    position: absolute;
-    left:50%;
-    top:50%;
-    transform: translate(-50%,-50%);
-    color: white;
-    font-size: 20px;
-    text-align: center;
-  }
-  .cir-btn{
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
-    border-radius: 50%;
-    /*background-image: linear-gradient(15deg, #013d5f 0%, #8dbcce 100%);*/
+  .car-li{
+    padding:20px 10px;
     background: rgba(255,255,255,0.8);
-  }
-  .cir-content{
+    box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.3);
+    position: relative;
+    border-radius: 0.1rem;
+    font-size: 0.9rem;
     text-align: center;
-    margin-top: 40%;
+    color: #000;
+    margin-bottom: .5rem;
   }
-  .cir-content .cir-btn{
+  .car-li:visited,.car-li:active{
+    background-color: #eee;
+  }
+  .car-content{
+    width: 100%;
+    box-shadow: border-box;
+    padding:10px;
+  }
+  .codrops-icon,.fa{
+    color: #322930;
+    font-size: 1.2rem;
+  }
+  .fa.add{
+    float: right;
     display: inline-block;
-  }
-  /*.nav{
-    height: 100%;
-    width:100%;
-    background: #4D4D52;
-  }*/
-  .menu-wrapper{
-    top:40%;
-  }
-  .menu-wrapper i{
-    color: white;
-    font-style: normal;
-  }
-  .do-content{
-    top: 0;
-    position: absolute;
-    height: 100%;
-    width:100%;
-    /*transform:translateX(100%);*/
-    z-index: 2;
-    -webkit-transition: all ease 500ms;
-    transition: all ease 500ms;
-    background: #4D4D52;
-  }
-  .conpany-content,.help-content{
-    transform:translateX(100%);
-  }
-
-  .help-content{
-    /*transform:translateX(-100%);*/
-  }
-  .back{
-    font-size: 20px;
-  }
-  .do-title{
-    padding-left: 20px;
-    margin: 20px 0;
-    font-size: 20px;
-    color:#b5b5b5;
-  }
-  .do-text-content{
-    padding:0 20px;
-    font-size: 14px;
-    color: #fffcf5;
-    line-height: 26px;
+    margin: 0.5em;
+    padding: 0em 0;
+    width: 1.5em;
+    text-decoration: none;
+    margin-top: 0.85rem;
   }
 </style>
 <body>
   <div class="content">
-    
+    <div class="">
+      <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev back"></a>
+      <a class="fa fa-plus add"></a>
+    </div>
+
+    <div class="car-content">
+      <div class="car-li">福克斯</div>
+      <div class="car-li">福克斯</div>
+      <div class="car-li">福克斯</div>
+    </div>
   </div>
 </body>
 </html>
