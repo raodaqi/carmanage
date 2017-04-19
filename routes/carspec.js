@@ -2,12 +2,6 @@
 var router = require('express').Router();
 var AV = require('leanengine');
 
-var AS = require('api-send');
-AS.config.APPID = "58f369a3a0bb9f006a9e2e2a";
-// AS.config.HOST = "http://carmanage.leanapp.cn";
-AS.config.HOST = "http://localhost:3000";
-AS = new AS();
-
 function sendError(res,code,message){
 	var result = {
 		code:code,
@@ -18,12 +12,6 @@ function sendError(res,code,message){
 }
 
 function validate(res,req,data){
-
-	// if(!AS.add(req,data)){
-	// 	res.send("123");
-	// 	return;
-	// }
-
 	for(var i in data){
 		if(req.method == 'GET'){
 			var value = req.query[i];
@@ -47,7 +35,7 @@ function validate(res,req,data){
 	return data;
 }
 
-var Car = AV.Object.extend('Car');
+var CarSpec = AV.Object.extend('CarSpec');
 
 // 新增
 router.post('/add', function(req, res, next) {
@@ -57,7 +45,7 @@ router.post('/add', function(req, res, next) {
 	if(!data){
 		return;
 	}
-	var query = new AV.Query(Car);
+	var query = new AV.Query(CarSpec);
 	query.equalTo('name',data.name);
 	query.find().then(function(results) {
 		//判断是否存在
@@ -71,7 +59,7 @@ router.post('/add', function(req, res, next) {
 		}else{
 			//不存在
 			//创建应用
-			var addObj = new Car();
+			var addObj = new CarSpec();
 			for(var key in data){
 				addObj.set(key,data[key]);
 			}
@@ -108,7 +96,7 @@ router.get('/delete', function(req, res, next) {
 	if(!data){
 		return;
 	}
-	var delObj = AV.Object.createWithoutData('Car', data.id);
+	var delObj = AV.Object.createWithoutData('CarSpec', data.id);
 	delObj.destroy().then(function (success) {
 		// 删除成功
 		var result = {
@@ -131,7 +119,7 @@ router.post('/edit', function(req, res, next) {
 	if(!data){
 		return;
 	}
-	var editObj = AV.Object.createWithoutData('Car', data.id);
+	var editObj = AV.Object.createWithoutData('CarSpec', data.id);
 	for(var key in data){
 		editObj.set(key,data[key]);
 	}
@@ -163,7 +151,7 @@ router.get('/list', function(req, res, next) {
 	}
 	var limit = data.limit ? data.limit : 1000;
 	var skip  = data.skip ? data.skip : 0;
-	var query = new AV.Query('Car');
+	var query = new AV.Query('CarSpec');
 	query.skip(skip);
 	query.limit(limit);
 	query.find().then(function (results) {
@@ -188,7 +176,7 @@ router.get('/detail', function(req, res, next) {
 	if(!data){
 		return;
 	}
-	var query = new AV.Query('Car');
+	var query = new AV.Query('CarSpec');
 	query.get(data.id).then(function(results){
 		// 删除成功
 		var result = {
@@ -202,5 +190,4 @@ router.get('/detail', function(req, res, next) {
 	}).catch(next);
 })
 
-// AS.build("/car",router);
 module.exports = router;

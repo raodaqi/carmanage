@@ -3,20 +3,20 @@
 <head>
   <title>福特</title>
   <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-  <link rel="stylesheet" href="/css/swiper.min.css">
-  <link rel="stylesheet" href="/css/particles.css">
-  <link rel="stylesheet" href="/css/common.css">
-  <link href='http://cdn.webfont.youziku.com/webfonts/nomal/11252/46865/58f1ea7bf629d80a984a61f2.css' rel='stylesheet' type='text/css' />
+
   <link href='http://at.alicdn.com/t/font_zdfcqhyvjk29y66r.css' rel='stylesheet' type='text/css' />
   <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
   <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
-  <!-- <link rel="stylesheet" type="text/css" href="/fonts/vicons/vicons-font.css" /> -->
   <link rel="stylesheet" type="text/css" href="/css/base.css" />
   <link rel="stylesheet" type="text/css" href="/css/menu.css" />
+  <link href='/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="/css/common.css">
 </head>
 <style>
   body{
-    background: #eeeeef;
+    /*background: #eeeeef;*/
+    background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+    overflow-y: hidden;
   }
   .car-li{
     padding:20px 10px;
@@ -24,7 +24,7 @@
     box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.3);
     position: relative;
     border-radius: 0.1rem;
-    font-size: 0.9rem;
+    font-size: 14px;
     text-align: center;
     color: #000;
     margin-bottom: .5rem;
@@ -39,7 +39,7 @@
   }
   .codrops-icon,.fa{
     color: #322930;
-    font-size: 1.2rem;
+    font-size: 20px;
   }
   .fa.add{
     float: right;
@@ -48,21 +48,201 @@
     padding: 0em 0;
     width: 1.5em;
     text-decoration: none;
-    margin-top: 0.85rem;
+    margin-top: 16px;
+  }
+  .do-content{
+    background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+  }
+  .add-content{
+    transform:translateY(100%);
+  }
+  .nav-text{
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top:0;
+    line-height: 48px;
+    color: #000;
+    font-size: 16px;
+    pointer-events:none;
+  }
+  .add-box{
+    padding-top: 40px;
+  }
+  .layui-layer-content {
+    width: 60px;
+    height: 24px;
+    background: url(/layer/skin/default/loading-0.gif) no-repeat;
+    margin: 30px auto;
   }
 </style>
 <body>
-  <div class="content">
-    <div class="">
-      <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev back"></a>
+  <div class="do-content content">
+    <div class="nav">
+      <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
+      <div class="nav-text">种类</div>
       <a class="fa fa-plus add"></a>
     </div>
 
-    <div class="car-content">
-      <div class="car-li">福克斯</div>
-      <div class="car-li">福克斯</div>
-      <div class="car-li">福克斯</div>
+    <div class="car-content car-list">
+      <!-- <div class="no-data">暂无数据...</div> -->
+      <div id="" class="layui-layer-content layui-layer-loading0"></div>
     </div>
   </div>
+
+  <div class="do-content add-content">
+    <div class="nav">
+      <a class="codrops-icon codrops-icon--prev back"></a>
+      <div class="nav-text">添加种类</div>
+    </div>
+
+    <div class="car-content">
+      <div class="add-box">
+        <form action="" id="addForm">
+            <input type="text" class="form-control" name="name" id="name" placeholder="请填写种类">
+            <button type="button" class="btn btn-warning mt-30 btn-block btn-create">添加</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/layer/mobile/layer.js"></script>
+  <script type="text/javascript" src="http://apimanage.leanapp.cn/api/link?app_id=58f369a3a0bb9f006a9e2e2a"> </script>
+  <script>
+    $.fn.longPress = function(fn) {
+      var timeout = undefined;
+      var $this = this;
+      console.log($this);
+      for(var i = 0;i<$this.length;i++){
+          $this[i].addEventListener('touchstart', function(event) {
+              timeout = setTimeout(fn, 800);
+              }, false);
+          $this[i].addEventListener('touchend', function(event) {
+              clearTimeout(timeout);
+              }, false);
+      }
+    }
+  </script>
+  <script>
+  function doAddContent(type){
+    if(type == 1){
+      $(".add-content").css({
+        "transform" : "translateY(0%)"
+      })
+    }else{
+      $(".add-content").css({
+        "transform" : "translateY(100%)"
+      })
+    }
+  }
+
+    $(".add").on("click",function(){
+      doAddContent(1);
+    })
+
+    $(".back").on("click",function(){
+      doAddContent();
+    })
+
+    $(".btn-create").on("click",function(){
+      layer.open({
+        type: 2,
+        content: '正在添加'
+      });
+      var data = $("#addForm").serializeArray();
+      cartypeAdd(data).then(function(result){
+          layer.closeAll();
+          getList();
+          //提示
+          layer.open({
+            content: '添加成功'
+            ,skin: 'msg'
+            ,time: 2 //2秒后自动关闭
+          });
+          doAddContent();
+
+        },function(error){
+          layer.closeAll();
+          layer.open({
+            content: error.message
+            ,skin: 'msg'
+            ,time: 2 //2秒后自动关闭
+          });
+          console.log(error);
+      })
+    })
+
+    function getList(){
+      cartypeList({}).then(function(result){
+          console.log(result);
+          var data = result.data;
+          var list = '';
+          for(var i = 0 ; i < data.length; i++){
+            list += '<div class="car-li" data-id="'+data[i].objectId+'">'+data[i].name+'</div>';
+          }
+
+          if(!data.length){
+            list = '<div class="no-data">暂无数据...</div>';
+          }
+
+          $(".car-list").empty().append(list);
+        },function(error){
+          layer.open({
+            content: error.message
+            ,skin: 'msg'
+            ,time: 2 //2秒后自动关闭
+          });
+          console.log(error);
+      })
+    }
+
+    $(function(){
+      getList();
+    })
+
+    var timer = undefined;
+    $(document).on("touchstart",".car-li",function(){
+      var $this = $(this);
+      timer = setTimeout(function(){
+        // console.log($this.text());
+        var id = $this.attr("data-id");
+        //底部对话框
+        layer.open({
+          content: '确定删除这个种类'
+          ,btn: ['删除', '取消']
+          ,skin: 'footer'
+          ,yes: function(index){
+            layer.open({
+              type: 2,
+              content: '正在删除'
+            });
+            var  data = {id:id};
+            cartypeDelete(data).then(function(result){
+                layer.closeAll();
+                getList();
+                //提示
+                layer.open({
+                  content: '删除成功'
+                  ,skin: 'msg'
+                  ,time: 2 //2秒后自动关闭
+                });
+                $this.remove();
+              },function(error){
+                layer.closeAll();
+                layer.open({
+                  content: error.message
+                  ,skin: 'msg'
+                  ,time: 2 //2秒后自动关闭
+                });
+                console.log(error);
+            })
+          }
+        });
+      }, 800);
+    }).on('touchend',".car-li",function(event) {
+      clearTimeout(timer);
+    });
+
+  </script>
 </body>
 </html>

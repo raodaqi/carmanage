@@ -6,10 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var AV = require('leanengine');
 var LCT = require('lc-build');
-var LCT = require('lc-build');
 var LCT = new LCT({
-  path:"routes/car.js",
-  name:"car"
+  path:"routes/carspec.js",
+  name:"CarSpec"
 })
 // LCT.build();
 
@@ -51,6 +50,7 @@ app.get('/list', function(req, res) {
 
 // 可以将一类的路由单独保存在一个文件中
 app.use('/car', require('./routes/car'));
+app.use('/cartype', require('./routes/cartype'));
 app.use('/user', require('./routes/user'));
 
 app.use(function(req, res, next) {
