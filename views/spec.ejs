@@ -80,7 +80,7 @@
   <div class="do-content content">
     <div class="nav">
       <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
-      <div class="nav-text">种类</div>
+      <div class="nav-text">规格</div>
       <a class="fa fa-plus add"></a>
     </div>
 
@@ -93,13 +93,13 @@
   <div class="do-content add-content">
     <div class="nav">
       <a class="codrops-icon codrops-icon--prev back"></a>
-      <div class="nav-text">添加种类</div>
+      <div class="nav-text">添加规格</div>
     </div>
 
     <div class="car-content">
       <div class="add-box">
         <form action="" id="addForm">
-            <input type="text" class="form-control" name="name" id="name" placeholder="请填写种类">
+            <input type="text" class="form-control" name="name" id="name" placeholder="请填写规格">
             <button type="button" class="btn btn-warning mt-30 btn-block btn-create">添加</button>
         </form>
       </div>
@@ -173,7 +173,10 @@
     })
 
     function getList(){
-      cartypeList({}).then(function(result){
+      //获取当前id
+
+      var type_id = location.search.split("id=")[1];
+      carspecList({type_id:type_id}).then(function(result){
           console.log(result);
           var data = result.data;
           var list = '';
@@ -197,6 +200,8 @@
     }
 
     $(function(){
+      var search = location.search;
+      console.log(search);
       getList();
     })
 
@@ -241,12 +246,6 @@
       }, 800);
     }).on('touchend',".car-li",function(event) {
       clearTimeout(timer);
-    });
-
-    $(document).on("click",".car-li",function(event) {
-      // clearTimeout(timer);
-      var id = $(this).attr("data-id");
-      window.location.href="/spec?id="+id;
     });
 
   </script>

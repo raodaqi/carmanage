@@ -47,10 +47,14 @@ app.get('/login', function(req, res) {
 app.get('/list', function(req, res) {
   res.render('list', { currentTime: new Date() });
 });
+app.get('/spec', function(req, res) {
+  res.render('spec', { currentTime: new Date() });
+});
 
 // 可以将一类的路由单独保存在一个文件中
 app.use('/car', require('./routes/car'));
 app.use('/cartype', require('./routes/cartype'));
+app.use('/carspec', require('./routes/carspec'));
 app.use('/user', require('./routes/user'));
 
 app.use(function(req, res, next) {
