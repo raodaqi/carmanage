@@ -52,10 +52,21 @@ app.get('/spec', function(req, res) {
 });
 
 // 可以将一类的路由单独保存在一个文件中
-app.use('/car', require('./routes/car'));
+app.use('/car/car', require('./routes/car'));
 app.use('/cartype', require('./routes/cartype'));
 app.use('/carspec', require('./routes/carspec'));
 app.use('/user', require('./routes/user'));
+
+// console.log(app._router.stack);
+for(var i = 0; i < app._router.stack.length; i++){
+  // var regexpString = JSON.stringify(app._router.stack[i].regexp);
+  // console.log(regexpString);
+  // if(regexpString.split("{").length){
+  //   break;
+  // }
+  console.log(app._router.stack[i].regexp.source.replace("?(?=\\/|$)","").replace("^","").replace(/\\\//g,"/"));
+  // console.log(app._router.stack[i].handle.stack);
+}
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
@@ -92,5 +103,7 @@ app.use(function(err, req, res, next) {
     error: error
   });
 });
+
+// console.log(app._router);
 
 module.exports = app;
