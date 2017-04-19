@@ -3,10 +3,10 @@ var router = require('express').Router();
 var AV = require('leanengine');
 
 var AS = require('api-send');
-AS.config.APPID = "58f369a3a0bb9f006a9e2e2a";
-// AS.config.HOST = "http://carmanage.leanapp.cn";
-AS.config.HOST = "http://localhost:3000";
-AS = new AS();
+// AS.config.APPID = "58f369a3a0bb9f006a9e2e2a";
+// // AS.config.HOST = "http://carmanage.leanapp.cn";
+// AS.config.HOST = "http://localhost:3000";
+// AS = new AS();
 
 function sendError(res,code,message){
 	var result = {
