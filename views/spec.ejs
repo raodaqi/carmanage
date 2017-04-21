@@ -150,7 +150,12 @@
         content: '正在添加'
       });
       var data = $("#addForm").serializeArray();
-      data.type_id = location.search.split("id=")[1];
+      data.push({
+        name : "type_id",
+        value : location.search.split("id=")[1]
+      })
+      // data.type_id = location.search.split("id=")[1];
+      console.log(data);
       carspecAdd(data).then(function(result){
           layer.closeAll();
           getList();
@@ -222,7 +227,12 @@
               content: '正在删除'
             });
             var  data = {id:id};
-            cartypeDelete(data).then(function(result){
+            // var data = $(this).serializeArray();
+            // data.push({
+            //   name : "id",
+            //   value : id
+            // });
+            carspecDelete(data).then(function(result){
                 layer.closeAll();
                 getList();
                 //提示
@@ -248,6 +258,10 @@
       clearTimeout(timer);
     });
 
+    $(".car-list").on("click",".car-li",function(){
+      var data_id = $(this).attr("data-id");
+      window.location.href = '/type?id='+data_id;
+    })
   </script>
 </body>
 </html>

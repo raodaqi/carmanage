@@ -57,6 +57,9 @@ app.get('/list', function(req, res) {
 app.get('/spec', function(req, res) {
   res.render('spec', { currentTime: new Date() });
 });
+app.get('/type', function(req, res) {
+  res.render('type', { currentTime: new Date() });
+});
 
 // 可以将一类的路由单独保存在一个文件中
 // app.use('/car', require('./routes/car'));
