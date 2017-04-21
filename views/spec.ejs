@@ -150,7 +150,8 @@
         content: '正在添加'
       });
       var data = $("#addForm").serializeArray();
-      cartypeAdd(data).then(function(result){
+      data.type_id = location.search.split("id=")[1];
+      carspecAdd(data).then(function(result){
           layer.closeAll();
           getList();
           //提示
@@ -174,7 +175,6 @@
 
     function getList(){
       //获取当前id
-
       var type_id = location.search.split("id=")[1];
       carspecList({type_id:type_id}).then(function(result){
           console.log(result);

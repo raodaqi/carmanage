@@ -19,10 +19,10 @@ function sendError(res,code,message){
 
 function validate(res,req,data){
 
-	if(!AS.add(req,data)){
-		res.send("123");
-		return;
-	}
+	// if(!AS.add(req,data)){
+	// 	res.send("123");
+	// 	return;
+	// }
 
 	for(var i in data){
 		if(req.method == 'GET'){
