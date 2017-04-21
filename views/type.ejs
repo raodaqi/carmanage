@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>福特</title>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"> -->
+    <!-- Link Swiper's CSS -->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet"  type="text/css" href="http://www.swiper.com.cn/dist/css/swiper.min.css">
+    
+
+  <link href='http://at.alicdn.com/t/font_zdfcqhyvjk29y66r.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="/css/base.css" />
+  <link rel="stylesheet" type="text/css" href="/css/menu.css" />
+  <link href='/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="/css/common.css">
+    <!-- Demo styles -->
+    <style>
+    html, body {
+        position: relative;
+        height: 100%;
+    }
+    body {
+        background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+        overflow-y: hidden;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color:#000;
+        margin: 0;
+        padding: 0;
+    }
+    .codrops-icon, .fa {
+        color: #322930;
+        font-size: 20px;
+    }
+    .do-content {
+        background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+    }
+    .nav-text {
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        top: 0;
+        line-height: 48px;
+        color: #000;
+        font-size: 16px;
+        pointer-events: none;
+    }
+    .fa.add {
+        float: right;
+        display: inline-block;
+        margin: 0.5em;
+        padding: 0em 0;
+        width: 1.5em;
+        text-decoration: none;
+        margin-top: 16px;
+    }
+    .add-box {
+        padding-top: 40px;
+    }
+    .car-content {
+        width: 100%;
+        padding: 10px;
+    }
+    .codrops-icon, .fa {
+        color: #322930;
+        font-size: 20px;
+    }
+    .nav-text {
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        top: 0;
+        line-height: 48px;
+        color: #000;
+        font-size: 16px;
+        pointer-events: none;
+    }
+    .add-content {
+        transform: translateY(100%);
+    }
+    .do-content {
+        background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+    }
+    .swiper-container {
+        width: 100%;
+        height: 300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .swiper-slide {
+        background-size: cover;
+        background-position: center;
+    }
+    .gallery-top {
+        height: 80%;
+        width: 100%;
+    }
+    .gallery-thumbs {
+        height: 20%;
+        box-sizing: border-box;
+        padding: 10px 0;
+    }
+    .gallery-thumbs .swiper-slide {
+        width: 25%;
+        height: 100%;
+        opacity: 0.4;
+    }
+    .gallery-thumbs .swiper-slide-active {
+        opacity: 1;
+    }
+    .gallery-top{
+        height: 72%;
+    }
+    .discount{
+        position: absolute;
+        height: auto;
+        padding: 5px;
+        filter:alpha(opacity=50);  
+        -moz-opacity:0.5;  
+        -khtml-opacity: 0.5;  
+        opacity: 0.5;
+        background-color: #000;
+        color: #fff;
+        bottom: 0; 
+        z-index: 22; 
+        width: 100%;
+    }
+    </style>
+</head>
+<body>
+    <!-- Swiper -->
+    <div class="do-content content">
+        <div class="nav">
+          <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
+          <div class="nav-text">测试规格</div>
+          <a class="fa fa-plus add"></a>
+        </div>
+        <div class="swiper-container gallery-top">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" style="background-image:url(img/nature1.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(img/nature2.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(img/nature3.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(img/nature4.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(img/nature5.jpg)"></div>
+            </div>
+            <!-- Add Arrows -->
+            <div class="swiper-button-next swiper-button-white"></div>
+            <div class="swiper-button-prev swiper-button-white"></div>
+            <div class="discount">优惠大甩卖</div>
+        </div>
+        <div class="swiper-container gallery-thumbs">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" style="background-image:url(img/nature1.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(img/nature2.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(img/nature3.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(img/nature4.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(img/nature5.jpg)"></div>
+            </div>
+        </div>
+    </div>
+    <div class="do-content add-content">
+        <div class="nav">
+            <a class="codrops-icon codrops-icon--prev back"></a>
+            <div class="nav-text">添加图片</div>
+        </div>
+
+        <div class="car-content">
+            <div class="add-box">
+                <form action="" id="addForm">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="请填写规格">
+                    <button type="button" class="btn btn-warning mt-30 btn-block btn-create">添加</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swiper JS -->
+    <script type="text/javascript" src="http://apimanage.leanapp.cn/api/link?app_id=58f369a3a0bb9f006a9e2e2a"> </script>
+    <script type="text/javascript" src="http://www.swiper.com.cn/dist/js/swiper.min.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/layer/mobile/layer.js"></script>
+    
+    <!-- Initialize Swiper -->
+    <script>
+    var galleryTop = new Swiper('.gallery-top', {
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        spaceBetween: 10,
+    });
+    var galleryThumbs = new Swiper('.gallery-thumbs', {
+        spaceBetween: 10,
+        centeredSlides: true,
+        slidesPerView: 'auto',
+        touchRatio: 0.2,
+        slideToClickedSlide: true
+    });
+    galleryTop.params.control = galleryThumbs;
+    galleryThumbs.params.control = galleryTop;
+    function doAddContent(type){
+    if(type == 1){
+      $(".add-content").css({
+        "transform" : "translateY(0%)"
+      })
+    }else{
+      $(".add-content").css({
+        "transform" : "translateY(100%)"
+      })
+    }
+  }
+
+    $(".add").on("click",function(){
+        // console.log(111111);
+      doAddContent(1);
+    })
+
+    $(".back").on("click",function(){
+      doAddContent();
+    })
+    </script>
+</body>
+</html>
