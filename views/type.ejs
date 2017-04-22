@@ -7,16 +7,14 @@
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"> -->
     <!-- Link Swiper's CSS -->
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <link rel="stylesheet"  type="text/css" href="http://www.swiper.com.cn/dist/css/swiper.min.css">
-    
-
-  <link href='http://at.alicdn.com/t/font_zdfcqhyvjk29y66r.css' rel='stylesheet' type='text/css' />
-  <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
-  <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
-  <link rel="stylesheet" type="text/css" href="/css/base.css" />
-  <link rel="stylesheet" type="text/css" href="/css/menu.css" />
-  <link href='/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
-  <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet"  type="text/css" href="/css/swiper.min.css">
+    <link href='http://at.alicdn.com/t/font_zdfcqhyvjk29y66r.css' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/css/menu.css" />
+    <link href='/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="/css/common.css">
     <!-- Demo styles -->
     <style>
     html, body {
@@ -129,6 +127,27 @@
         z-index: 22; 
         width: 100%;
     }
+    .form-control{
+        padding-left: 35%;
+    }
+    .addp{
+        padding-left: 50%;
+        margin-left: -50px;
+        width: 100%;
+    }
+    .addpho{
+        width: 100px;
+    }
+    #discount{
+        margin-top: 15px;
+    }
+    #wrapper1 .swiper-slide{
+      width: 320px;
+      margin-right: 10px;
+    }
+    #wrapper2 .swiper-slide{
+      margin-right: 10px;
+    }
     </style>
 </head>
 <body>
@@ -140,20 +159,29 @@
           <a class="fa fa-plus add"></a>
         </div>
         <div class="swiper-container gallery-top">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide" style="background-image:url(img/nature1.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(img/nature2.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(img/nature3.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(img/nature4.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(img/nature5.jpg)"></div>
+            <div class="swiper-wrapper" id="wrapper1">
+                <div class="swiper-slide" style="background-image:url(img/nature1.jpg)">
+                    <div class="discount">优惠1</div>
+                </div>
+                <div class="swiper-slide" style="background-image:url(img/nature2.jpg)">
+                    <div class="discount">优惠2</div>
+                </div>
+                <div class="swiper-slide" style="background-image:url(img/nature3.jpg)">
+                    <div class="discount">优惠3</div>
+                </div>
+                <div class="swiper-slide" style="background-image:url(img/nature4.jpg)">
+                    <div class="discount">优惠4</div>
+                </div>
+                <div class="swiper-slide" style="background-image:url(img/nature5.jpg)">
+                    <div class="discount">优惠5</div>
+                </div>
             </div>
             <!-- Add Arrows -->
             <div class="swiper-button-next swiper-button-white"></div>
             <div class="swiper-button-prev swiper-button-white"></div>
-            <div class="discount">优惠大甩卖</div>
         </div>
         <div class="swiper-container gallery-thumbs">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper" id="wrapper2">
                 <div class="swiper-slide" style="background-image:url(img/nature1.jpg)"></div>
                 <div class="swiper-slide" style="background-image:url(img/nature2.jpg)"></div>
                 <div class="swiper-slide" style="background-image:url(img/nature3.jpg)"></div>
@@ -170,8 +198,12 @@
 
         <div class="car-content">
             <div class="add-box">
-                <form action="" id="addForm">
-                    <input type="text" class="form-control" name="name" id="name" placeholder="请填写规格">
+                <form action="" id="addForm" enctype="multipart/form-data">
+                    <input type="file" class="form-control" name="photo" id="photo" placeholder="请添加图片" onchange="preview(this)" style="display:none">
+                    <div class="addp">
+                        <img src="img/pho.png" class="addpho">
+                    </div> 
+                    <input type="text" class="form-control" name="discount" id="discount" placeholder="请输入优惠信息">                   
                     <button type="button" class="btn btn-warning mt-30 btn-block btn-create">添加</button>
                 </form>
             </div>
@@ -180,7 +212,7 @@
 
     <!-- Swiper JS -->
     <script type="text/javascript" src="http://apimanage.leanapp.cn/api/link?app_id=58f369a3a0bb9f006a9e2e2a"> </script>
-    <script type="text/javascript" src="http://www.swiper.com.cn/dist/js/swiper.min.js"></script>
+    <script type="text/javascript" src="/js/swiper.min.js"></script>
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/layer/mobile/layer.js"></script>
     
@@ -213,12 +245,210 @@
   }
 
     $(".add").on("click",function(){
-        // console.log(111111);
       doAddContent(1);
     })
 
     $(".back").on("click",function(){
       doAddContent();
+    })
+    function preview(file) {
+      console.log(file.files[0]);
+        if (file.files && file.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+                $(".addpho").attr("src",evt.target.result);
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+    }
+
+    $(".addpho").on("click",function(){
+        $("#photo").click();
+    })
+    getList();
+    function getList(){
+      //获取当前id
+        var spec_id = location.search.split("spec_id=")[1];
+        $.ajax({
+           type: "GET",
+           url: 'carinfo/list',
+           data: {spec_id : spec_id},
+           dataType: "json",
+           success : function(result) {
+               console.log(result);
+               var data = result.data;
+               var str = '';
+               var str1 = '';
+               for(var i = 0;i < data.length;i++){
+                  str +='<div class="swiper-slide" style="background-image:url('+data[i].url+')"><div class="discount">'+data[i].discount+'</div></div>';
+                  str1 +='<div class="swiper-slide" style="background-image:url('+data[i].url+')"></div>';
+               }
+               // console.log(str);
+               $("#wrapper1").append(str);
+               $("#wrapper2").append(str1);
+           },
+           error : function(){
+                layer.open({
+                    content: error.message
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+                console.log(error);
+           }
+       });
+      // carspecList({type_id:type_id}).then(function(result){
+      //     console.log(result);
+      //     var data = result.data;
+      //     var list = '';
+      //     for(var i = 0 ; i < data.length; i++){
+      //       list += '<div class="car-li" data-id="'+data[i].objectId+'">'+data[i].name+'</div>';
+      //     }
+
+      //     if(!data.length){
+      //       list = '<div class="no-data">暂无数据...</div>';
+      //     }
+
+      //     $(".car-list").empty().append(list);
+      //   },function(error){
+      //     layer.open({
+      //       content: error.message
+      //       ,skin: 'msg'
+      //       ,time: 2 //2秒后自动关闭
+      //     });
+      //     console.log(error);
+      // })
+    }
+    $(".btn-create").on("click",function(){
+      // layer.open({
+      //   type: 2,
+      //   content: '正在添加'
+      // });
+      // var data = $("#addForm").serializeArray();
+      // data.push({
+      //   name : "photo",
+      //   value : $('#photo')[0]
+      // })
+      var discount = $("#discount").val();
+      // var photo = $('#photo')[0];
+      // if (photo.files.length > 0) {
+      //   var localFile = photo.files[0];
+      //   var name = photo.name;
+      //   console.log(name);
+      //   console.log()
+      // }
+      // console.log(photo);
+      // console.log(photo.files[0].name)
+      //var photoUrl = fileup(photo);
+       // $.ajax({
+       //    type: "POST",
+       //    url: 'carinfo/fileup',
+       //    data: {
+       //      photo : photo
+       //    },
+       //      success : function(result) {
+       //        console.log(result);
+       //        },
+       //      error : function(){
+       //        console.log(error);
+       //      }
+       // });
+       var url;
+       $.ajax({
+           type: "POST",
+           url: 'carinfo/fileup',
+           cache: false,
+           data: new FormData($('#addForm')[0]),
+           processData: false,
+           contentType: false,
+           success : function(result) {
+               console.log(result);
+               url = result;
+               var data = {
+                  spec_id : location.search.split("id=")[1],
+                  discount : discount,
+                  url : url
+                }
+               $.ajax({
+                   type: "POST",
+                   url: 'carinfo/add',
+                   data: data,
+                   dataType: "json",
+                   success : function(result) {
+                       console.log(result);
+                       layer.closeAll();
+                       getList();
+                      //提示
+                      layer.open({
+                        content: '添加成功'
+                        ,skin: 'msg'
+                        ,time: 2 //2秒后自动关闭
+                      });
+                      doAddContent();
+                   },
+                   error:function(error){
+                        layer.open({
+                            content: error.message
+                            ,skin: 'msg'
+                            ,time: 2 //2秒后自动关闭
+                        });
+                        console.log(error);
+                   }
+               })
+               // layer.closeAll();
+               // getList();
+              //提示
+              // layer.open({
+              //   content: '添加成功'
+              //   ,skin: 'msg'
+              //   ,time: 2 //2秒后自动关闭
+              // });
+              // doAddContent();
+           },
+           error:function(error){
+                // layer.open({
+                //     content: error.message
+                //     ,skin: 'msg'
+                //     ,time: 2 //2秒后自动关闭
+                // });
+                console.log(error);
+           }
+       })
+      // var data = {
+      //   spec_id : location.search.split("id=")[1],
+      //   discount : discount,
+      //   url : url
+      // }
+      // console.log(data);
+      // data.type_id = location.search.split("id=")[1];
+      // console.log(data);
+      // console.log(new FormData($('#addForm')[0]));
+      // return;
+      // $.ajax({
+      //      type: "POST",
+      //      url: 'carinfo/add',
+      //      data: data,
+      //      dataType: "json",
+      //      success : function(result) {
+      //          console.log(result);
+      //          layer.closeAll();
+      //          getList();
+      //         //提示
+      //         layer.open({
+      //           content: '添加成功'
+      //           ,skin: 'msg'
+      //           ,time: 2 //2秒后自动关闭
+      //         });
+      //         doAddContent();
+      //      },
+      //      error:function(error){
+      //           layer.open({
+      //               content: error.message
+      //               ,skin: 'msg'
+      //               ,time: 2 //2秒后自动关闭
+      //           });
+      //           console.log(error);
+      //      }
+      //  })
     })
     </script>
 </body>

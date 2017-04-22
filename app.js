@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var AV = require('leanengine');
 var LCT = require('lc-build');
 var LCT = new LCT({
-  path:"routes/carspec.js",
-  name:"CarSpec"
+  path:"routes/carinfo.js",
+  name:"CarInfo"
 })
 // LCT.build();
 
@@ -63,6 +63,7 @@ app.get('/type', function(req, res) {
 
 // 可以将一类的路由单独保存在一个文件中
 // app.use('/car', require('./routes/car'));
+app.use('/carinfo', require('./routes/carinfo'));
 app.use('/cartype', require('./routes/cartype'));
 app.use('/carspec', require('./routes/carspec'));
 app.use('/user', require('./routes/user'));
