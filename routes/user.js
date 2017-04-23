@@ -51,7 +51,7 @@ function validate(res,req,data){
 router.post('/signup', function(req, res, next) {
 	var data = {
 		username : "用户名",
-		password : "密码"
+		password : "密码",
     }
 	var data = validate(res,req,data);
 	if(!data){
@@ -94,6 +94,7 @@ router.post('/login', function(req, res, next) {
   	// 设置密码
   	user.setPassword(data.password);
   	AV.User.logIn(data.username, data.password).then(function (loginedUser) {
+  		res.saveCurrentUser(loginedUser);
     	var result = {
 		   	code : 200,
 		   	data : loginedUser,
@@ -105,6 +106,76 @@ router.post('/login', function(req, res, next) {
   	});
 })
 
+router.get('/getUser',function(req, res, next){
+	var name = req.currentUser.get('username');
+	console.log(name);
+	if(name){
+		// res.json({
+  //     username: req.currentUser.get('username')
+  //   });
+  		var result = {
+		   	code : 200,
+		   	data : name,
+		    message : '获取用户名成功'
+		} 
+		res.send(result);
+	}
+    else{
+    	var result = {
+		   	code : 300,
+		    message : '用户未登录'
+		} 
+		res.send(result);
+    }
+})
+
+router.get('/detail', function(req, res, next) {
+	var data = {
+		id : 'id'
+    }
+	var data = validate(res,req,data);
+	if(!data){
+		return;
+	}
+	var query = new AV.Query('_User');
+	query.get(data.id).then(function(results){
+		// 删除成功
+		var result = {
+		   	code : 200,
+		   	data : results,
+		    message : '获取成功'
+		}
+		res.send(result);
+	}, function(error) {
+		res.send(error);
+	}).catch(next);
+})
+router.get('/list', function(req, res, next) {
+	var data = {
+		limit   : '',
+       	skip    : ''     	
+    }
+	var data = validate(res,req,data);
+	if(!data){
+		return;
+	}
+	var limit = data.limit ? data.limit : 1000;
+	var skip  = data.skip ? data.skip : 0;
+	var query = new AV.Query('_User');
+	query.skip(skip);
+	query.limit(limit);
+	query.find().then(function (results) {
+		// 删除成功
+		var result = {
+		   	code : 200,
+		   	data : results,
+		    message : '获取成功'
+		}
+		res.send(result);
+	}, function(error) {
+		res.send(error);
+	}).catch(next);
+})
 // AS.build("/user",router);
 module.exports = router;
 

@@ -43,6 +43,7 @@ app.enable('trust proxy');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(AV.Cloud.CookieSession({ secret: '<put random string here>', maxAge: 3600000, fetchUser: true }));
 
 app.get('/', function(req, res) {
   res.render('index', { currentTime: new Date() });
@@ -60,7 +61,6 @@ app.get('/spec', function(req, res) {
 app.get('/type', function(req, res) {
   res.render('type', { currentTime: new Date() });
 });
-
 // 可以将一类的路由单独保存在一个文件中
 // app.use('/car', require('./routes/car'));
 app.use('/carinfo', require('./routes/carinfo'));

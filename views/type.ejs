@@ -6,6 +6,7 @@
     <title>福特</title>
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"> -->
     <!-- Link Swiper's CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
     <link rel="stylesheet"  type="text/css" href="/css/swiper.min.css">
     <link href='http://at.alicdn.com/t/font_zdfcqhyvjk29y66r.css' rel='stylesheet' type='text/css' />
@@ -49,12 +50,13 @@
     }
     .fa.add {
         float: right;
-        display: inline-block;
+        /*display: inline-block;*/
         margin: 0.5em;
         padding: 0em 0;
         width: 1.5em;
         text-decoration: none;
         margin-top: 16px;
+        display: none;
     }
     .add-box {
         padding-top: 40px;
@@ -148,6 +150,23 @@
     #wrapper2 .swiper-slide{
       margin-right: 10px;
     }
+    .del{
+        position: absolute;
+        height: auto;
+        padding-right: 5px;
+        filter:alpha(opacity=50);  
+        -moz-opacity:0.5;  
+        -khtml-opacity: 0.5;  
+        opacity: 0.5;
+        background-color: #000;
+        color: #fff;
+        top: 0; 
+        z-index: 22; 
+        width: 100%;
+        font-size: 20px;
+        text-align: right;
+        display: none;
+    }
     </style>
 </head>
 <body>
@@ -160,21 +179,9 @@
         </div>
         <div class="swiper-container gallery-top">
             <div class="swiper-wrapper" id="wrapper1">
-                <div class="swiper-slide" style="background-image:url(img/nature1.jpg)">
-                    <div class="discount">优惠1</div>
-                </div>
-                <div class="swiper-slide" style="background-image:url(img/nature2.jpg)">
-                    <div class="discount">优惠2</div>
-                </div>
-                <div class="swiper-slide" style="background-image:url(img/nature3.jpg)">
-                    <div class="discount">优惠3</div>
-                </div>
-                <div class="swiper-slide" style="background-image:url(img/nature4.jpg)">
-                    <div class="discount">优惠4</div>
-                </div>
-                <div class="swiper-slide" style="background-image:url(img/nature5.jpg)">
-                    <div class="discount">优惠5</div>
-                </div>
+              <!-- <div class="swiper-slide swiper-slide-duplicate" style="background-image: url(&quot;http://lorempixel.com/1200/1200/nature/6&quot;); width: 320px; margin-right: 10px;" data-swiper-slide-index="5">
+                <div class="del">x</div>
+              </div> -->
             </div>
             <!-- Add Arrows -->
             <div class="swiper-button-next swiper-button-white"></div>
@@ -182,11 +189,7 @@
         </div>
         <div class="swiper-container gallery-thumbs">
             <div class="swiper-wrapper" id="wrapper2">
-                <div class="swiper-slide" style="background-image:url(img/nature1.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(img/nature2.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(img/nature3.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(img/nature4.jpg)"></div>
-                <div class="swiper-slide" style="background-image:url(img/nature5.jpg)"></div>
+              <!-- <div class="swiper-slide" style="background-image: url(&quot;http://lorempixel.com/1200/1200/nature/5&quot;); width: 320px; margin-right: 10px;" data-swiper-slide-index="4"></div> -->
             </div>
         </div>
     </div>
@@ -213,6 +216,7 @@
     <!-- Swiper JS -->
     <script type="text/javascript" src="http://apimanage.leanapp.cn/api/link?app_id=58f369a3a0bb9f006a9e2e2a"> </script>
     <script type="text/javascript" src="/js/swiper.min.js"></script>
+    <script type="text/javascript" src="/js/swiper.js"></script>
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/layer/mobile/layer.js"></script>
     
@@ -221,7 +225,7 @@
     var galleryTop = new Swiper('.gallery-top', {
         nextButton: '.swiper-button-next',
         prevButton: '.swiper-button-prev',
-        spaceBetween: 10,
+        spaceBetween: 10,  
     });
     var galleryThumbs = new Swiper('.gallery-thumbs', {
         spaceBetween: 10,
@@ -279,15 +283,21 @@
                var data = result.data;
                var str = '';
                var str1 = '';
+               var j;
                for(var i = 0;i < data.length;i++){
-                  str +='<div class="swiper-slide" style="background-image:url('+data[i].url+')"><div class="discount">'+data[i].discount+'</div></div>';
-                  str1 +='<div class="swiper-slide" style="background-image:url('+data[i].url+')"></div>';
+                  if(data[i].spec_id == spec_id){
+                    j = i+1;
+                    str +='<div class="swiper-slide" data-id="'+data[i].objectId+'" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'"><div class="del">x</div><div class="discount">'+data[i].discount+'</div></div>';
+                    str1 +='<div class="swiper-slide" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'"></div>';
+                  }
                }
                // console.log(str);
                $("#wrapper1").append(str);
                $("#wrapper2").append(str1);
+               galleryTop.update(true);
+               galleryThumbs.update(true);
            },
-           error : function(){
+           error : function(error){
                 layer.open({
                     content: error.message
                     ,skin: 'msg'
@@ -319,39 +329,7 @@
       // })
     }
     $(".btn-create").on("click",function(){
-      // layer.open({
-      //   type: 2,
-      //   content: '正在添加'
-      // });
-      // var data = $("#addForm").serializeArray();
-      // data.push({
-      //   name : "photo",
-      //   value : $('#photo')[0]
-      // })
       var discount = $("#discount").val();
-      // var photo = $('#photo')[0];
-      // if (photo.files.length > 0) {
-      //   var localFile = photo.files[0];
-      //   var name = photo.name;
-      //   console.log(name);
-      //   console.log()
-      // }
-      // console.log(photo);
-      // console.log(photo.files[0].name)
-      //var photoUrl = fileup(photo);
-       // $.ajax({
-       //    type: "POST",
-       //    url: 'carinfo/fileup',
-       //    data: {
-       //      photo : photo
-       //    },
-       //      success : function(result) {
-       //        console.log(result);
-       //        },
-       //      error : function(){
-       //        console.log(error);
-       //      }
-       // });
        var url;
        $.ajax({
            type: "POST",
@@ -394,61 +372,97 @@
                         console.log(error);
                    }
                })
-               // layer.closeAll();
-               // getList();
-              //提示
-              // layer.open({
-              //   content: '添加成功'
-              //   ,skin: 'msg'
-              //   ,time: 2 //2秒后自动关闭
-              // });
-              // doAddContent();
            },
            error:function(error){
-                // layer.open({
-                //     content: error.message
-                //     ,skin: 'msg'
-                //     ,time: 2 //2秒后自动关闭
-                // });
+                layer.open({
+                    content: error.message
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
                 console.log(error);
            }
        })
-      // var data = {
-      //   spec_id : location.search.split("id=")[1],
-      //   discount : discount,
-      //   url : url
-      // }
-      // console.log(data);
-      // data.type_id = location.search.split("id=")[1];
-      // console.log(data);
-      // console.log(new FormData($('#addForm')[0]));
-      // return;
-      // $.ajax({
-      //      type: "POST",
-      //      url: 'carinfo/add',
-      //      data: data,
-      //      dataType: "json",
-      //      success : function(result) {
-      //          console.log(result);
-      //          layer.closeAll();
-      //          getList();
-      //         //提示
-      //         layer.open({
-      //           content: '添加成功'
-      //           ,skin: 'msg'
-      //           ,time: 2 //2秒后自动关闭
-      //         });
-      //         doAddContent();
-      //      },
-      //      error:function(error){
-      //           layer.open({
-      //               content: error.message
-      //               ,skin: 'msg'
-      //               ,time: 2 //2秒后自动关闭
-      //           });
-      //           console.log(error);
-      //      }
-      //  })
+    })
+    function getuser(){
+      $.ajax({
+           type: "GET",
+           url: 'user/getUser',
+           data :  {},
+           dataType: "json",
+           success : function(result) {
+               console.log(result);
+               var name = result.data;
+               console.log(name);
+               $.ajax({
+                 type: "GET",
+                 url: 'user/list',
+                 data :  {username : name},
+                 dataType: "json",
+                 success : function(result) {
+                    console.log(result);
+                    var data = result.data;
+                    var id;
+                    for(var i = 0; i < data.length;i++){
+                      if(name == data[i].username){
+                        id = data[i].objectId;
+                        $.ajax({
+                           type: "GET",
+                           url: 'user/detail',
+                           data :  {id : id},
+                           dataType: "json",
+                           success : function(result) {
+                              console.log(result);
+                              if(result.data.manage ==  'y'){
+                                $(".add").show();
+                                $(".del").show();
+                              }
+                               },
+                             error:function(error){
+                                  console.log(error);
+                             }
+                         })
+                      }
+                    }
+                    },
+                   error:function(error){
+                        console.log(error);
+                   }
+               })
+           },
+           error:function(error){
+                console.log(error);
+           }
+       })
+    }
+    getuser();
+    $("body").on("click",".del",function(){
+      var id = $(this).parent().attr("data-id");
+      $.ajax({
+           type: "GET",
+           url: 'carinfo/delete',
+           data :  {id : id},
+           dataType: "json",
+           success : function(result) {
+               console.log(result);
+               layer.closeAll();
+               getList();
+               window.location.reload();
+               //提示
+               layer.open({
+               content: '删除成功'
+               ,skin: 'msg'
+               ,time: 2 //2秒后自动关闭
+               });
+              },
+          error:function(error){
+                layer.open({
+                    content: error.message
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+              console.log(error);
+          }
+       })
     })
     </script>
 </body>

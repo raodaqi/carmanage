@@ -124,7 +124,7 @@ router.get('/delete', function(req, res, next) {
 		var result = {
 		   	code : 200,
 		   	data : [],
-		    message : '项目已存在'
+		    message : '删除成功'
 		}
 		res.send(result);
 	}, function(error) {

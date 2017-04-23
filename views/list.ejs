@@ -43,12 +43,13 @@
   }
   .fa.add{
     float: right;
-    display: inline-block;
+    /*display: inline-block;*/
     margin: 0.5em;
     padding: 0em 0;
     width: 1.5em;
     text-decoration: none;
     margin-top: 16px;
+    display: none;
   }
   .do-content{
     background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
@@ -248,7 +249,57 @@
       var id = $(this).attr("data-id");
       window.location.href="/spec?id="+id;
     });
-
+    function getuser(){
+      $.ajax({
+           type: "GET",
+           url: 'user/getUser',
+           data :  {},
+           dataType: "json",
+           success : function(result) {
+               console.log(result);
+               var name = result.data;
+               console.log(name);
+               $.ajax({
+                 type: "GET",
+                 url: 'user/list',
+                 data :  {username : name},
+                 dataType: "json",
+                 success : function(result) {
+                    console.log(result);
+                    var data = result.data;
+                    var id;
+                    for(var i = 0; i < data.length;i++){
+                      if(name == data[i].username){
+                        id = data[i].objectId;
+                        $.ajax({
+                           type: "GET",
+                           url: 'user/detail',
+                           data :  {id : id},
+                           dataType: "json",
+                           success : function(result) {
+                              console.log(result);
+                              if(result.data.manage ==  'y'){
+                                $(".add").show();
+                              }
+                               },
+                             error:function(error){
+                                  console.log(error);
+                             }
+                         })
+                      }
+                    }
+                    },
+                   error:function(error){
+                        console.log(error);
+                   }
+               })
+           },
+           error:function(error){
+                console.log(error);
+           }
+       })
+    }
+    getuser();
   </script>
 </body>
 </html>
