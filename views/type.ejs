@@ -116,17 +116,32 @@
         height: 72%;
     }
     .discount{
+         position: absolute;
+         height: auto;
+         padding: 10px;
+         filter:alpha(opacity=50);
+         -moz-opacity:0.5;
+         -khtml-opacity: 0.5;
+         opacity: 0.5;
+         background-color: #000;
+         color: #fff;
+         bottom: 20px;
+         z-index: 22;
+         width: 100%;
+     }
+    .num{
         position: absolute;
-        height: auto;
-        padding: 5px;
-        filter:alpha(opacity=50);  
-        -moz-opacity:0.5;  
-        -khtml-opacity: 0.5;  
+        height: 20px;
+        line-height: 20px;
+        padding-left: 10px;
+        filter:alpha(opacity=50);
+        -moz-opacity:0.5;
+        -khtml-opacity: 0.5;
         opacity: 0.5;
         background-color: #000;
         color: #fff;
-        bottom: 0; 
-        z-index: 22; 
+        bottom: 0;
+        z-index: 22;
         width: 100%;
     }
     .form-control{
@@ -206,7 +221,8 @@
                     <div class="addp">
                         <img src="img/pho.png" class="addpho">
                     </div> 
-                    <input type="text" class="form-control" name="discount" id="discount" placeholder="请输入优惠信息">                   
+                    <input type="text" class="form-control" name="discount" id="discount" placeholder="请输入优惠信息">
+                    <input type="text" class="form-control" name="num" id="num" placeholder="请输入车辆库存">
                     <button type="button" class="btn btn-warning mt-30 btn-block btn-create">添加</button>
                 </form>
             </div>
@@ -287,7 +303,7 @@
                for(var i = 0;i < data.length;i++){
                   if(data[i].spec_id == spec_id){
                     j = i+1;
-                    str +='<div class="swiper-slide" data-id="'+data[i].objectId+'" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'"><div class="del">x</div><div class="discount">'+data[i].discount+'</div></div>';
+                    str +='<div class="swiper-slide" data-id="'+data[i].objectId+'" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'"><div class="del">x</div><div class="discount">优惠信息：'+data[i].discount+'</div><div class="num">车辆库存：'+data[i].num+'</div> </div>';
                     str1 +='<div class="swiper-slide" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'"></div>';
                   }
                }
@@ -306,30 +322,10 @@
                 console.log(error);
            }
        });
-      // carspecList({type_id:type_id}).then(function(result){
-      //     console.log(result);
-      //     var data = result.data;
-      //     var list = '';
-      //     for(var i = 0 ; i < data.length; i++){
-      //       list += '<div class="car-li" data-id="'+data[i].objectId+'">'+data[i].name+'</div>';
-      //     }
-
-      //     if(!data.length){
-      //       list = '<div class="no-data">暂无数据...</div>';
-      //     }
-
-      //     $(".car-list").empty().append(list);
-      //   },function(error){
-      //     layer.open({
-      //       content: error.message
-      //       ,skin: 'msg'
-      //       ,time: 2 //2秒后自动关闭
-      //     });
-      //     console.log(error);
-      // })
     }
     $(".btn-create").on("click",function(){
       var discount = $("#discount").val();
+      var num  = $("#num").val();
        var url;
        $.ajax({
            type: "POST",
@@ -342,10 +338,15 @@
                console.log(result);
                url = result;
                var data = {
-                  spec_id : location.search.split("id=")[1],
-                  discount : discount,
-                  url : url
+                   spec_id : location.search.split("id=")[1],
+                   discount : discount,
+                   url : url,
+                   num : num
                 }
+               layer.open({
+                   type: 2,
+                   content: '正在添加'
+               });
                $.ajax({
                    type: "POST",
                    url: 'carinfo/add',
@@ -362,6 +363,7 @@
                         ,time: 2 //2秒后自动关闭
                       });
                       doAddContent();
+                       window.location.reload();
                    },
                    error:function(error){
                         layer.open({
@@ -383,86 +385,61 @@
            }
        })
     })
-    function getuser(){
-      $.ajax({
-           type: "GET",
-           url: 'user/getUser',
-           data :  {},
-           dataType: "json",
-           success : function(result) {
-               console.log(result);
-               var name = result.data;
-               console.log(name);
-               $.ajax({
-                 type: "GET",
-                 url: 'user/list',
-                 data :  {username : name},
-                 dataType: "json",
-                 success : function(result) {
-                    console.log(result);
-                    var data = result.data;
-                    var id;
-                    for(var i = 0; i < data.length;i++){
-                      if(name == data[i].username){
-                        id = data[i].objectId;
-                        $.ajax({
-                           type: "GET",
-                           url: 'user/detail',
-                           data :  {id : id},
-                           dataType: "json",
-                           success : function(result) {
-                              console.log(result);
-                              if(result.data.manage ==  'y'){
-                                $(".add").show();
-                                $(".del").show();
-                              }
-                               },
-                             error:function(error){
-                                  console.log(error);
-                             }
-                         })
-                      }
-                    }
-                    },
-                   error:function(error){
-                        console.log(error);
-                   }
-               })
-           },
-           error:function(error){
+    function getuser() {
+        $.ajax({
+            type: "GET",
+            url: 'user/getUser',
+            data :  {},
+            dataType: "json",
+            success : function(result) {
+                console.log(result);
+                if(result.data == 'y'){
+                    $(".add").show();
+                    $(".del").show();
+                }
+            },
+            error:function(error) {
                 console.log(error);
-           }
-       })
+            }
+        })
     }
     getuser();
     $("body").on("click",".del",function(){
       var id = $(this).parent().attr("data-id");
-      $.ajax({
-           type: "GET",
-           url: 'carinfo/delete',
-           data :  {id : id},
-           dataType: "json",
-           success : function(result) {
-               console.log(result);
-               layer.closeAll();
-               getList();
-               window.location.reload();
-               //提示
-               layer.open({
-               content: '删除成功'
-               ,skin: 'msg'
-               ,time: 2 //2秒后自动关闭
-               });
-              },
-          error:function(error){
-                layer.open({
-                    content: error.message
-                    ,skin: 'msg'
-                    ,time: 2 //2秒后自动关闭
-                });
-              console.log(error);
-          }
-       })
+        layer.open({
+            content: '确定删除这个车辆'
+            ,btn: ['删除', '取消']
+            ,skin: 'footer'
+            ,yes: function(index){
+                layer.open({content: '正在删除'})
+                $.ajax({
+                    type: "GET",
+                    url: 'carinfo/delete',
+                    data :  {id : id},
+                    dataType: "json",
+                    success : function(result) {
+                        console.log(result);
+                        layer.closeAll();
+                        getList();
+                        //提示
+                        layer.open({
+                            content: '删除成功'
+                            ,skin: 'msg'
+                            ,time: 2 //2秒后自动关闭
+                        });
+                        window.location.reload();
+                    },
+                    error:function(error){
+                        layer.open({
+                            content: error.message
+                            ,skin: 'msg'
+                            ,time: 2 //2秒后自动关闭
+                        });
+                        console.log(error);
+                    }
+                })
+            }
+        });
     })
     </script>
 </body>

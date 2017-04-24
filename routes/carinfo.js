@@ -61,7 +61,8 @@ router.post('/add', function(req, res, next) {
 	var data = {
 		spec_id : '规格id',
 		discount : '优惠信息',
-		url : '图片链接'
+		url : '图片链接',
+		num :'库存'
     }
 	var data = validate(res,req,data);
 	if(!data){

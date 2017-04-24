@@ -63,14 +63,14 @@
       <div class="login-content login">
         <form action="" id="loginForm">
           <input type="text" class="form-control" name="username" id="name" placeholder="用户名">
-          <input type="text" class="form-control" name="password" id="password" placeholder="密码">
+          <input type="password" class="form-control" name="password" id="password" placeholder="密码">
           <button type="button" class="btn btn-warning mt-30 btn-block btn-create">登录</button>
         </form>
       </div>
       <div class="signup-content signup">
         <form action="" id="signupForm">
           <input type="text" class="form-control" name="username" id="name" placeholder="用户名">
-          <input type="text" class="form-control" name="password" id="password" placeholder="密码">
+          <input type="password" class="form-control" name="password" id="password" placeholder="密码">
           <button type="button" class="btn btn-warning mt-30 btn-block btn-signup">注册</button>
         </form>
       </div>
@@ -151,6 +151,28 @@
           console.log(error);
       })
     })
+    function getuser() {
+        $.ajax({
+            type: "GET",
+            url: 'user/getUser',
+            data :  {},
+            dataType: "json",
+            success : function(result) {
+                console.log(result);
+                if(result.data == 'y'){
+                    $(".add").show();
+                    $(".nav-text").attr("data-manage","y");
+                }
+                else {
+                    $(".nav-text").attr("data-manage","n");
+                }
+            },
+            error:function(error) {
+                console.log(error);
+            }
+        })
+    }
+    getuser();
   </script>
 </body>
 </html>

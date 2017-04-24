@@ -208,37 +208,40 @@
         // console.log($this.text());
         var id = $this.attr("data-id");
         //底部对话框
-        layer.open({
-          content: '确定删除这个种类'
-          ,btn: ['删除', '取消']
-          ,skin: 'footer'
-          ,yes: function(index){
-            layer.open({
-              type: 2,
-              content: '正在删除'
-            });
-            var  data = {id:id};
-            cartypeDelete(data).then(function(result){
-                layer.closeAll();
-                getList();
-                //提示
-                layer.open({
-                  content: '删除成功'
-                  ,skin: 'msg'
-                  ,time: 2 //2秒后自动关闭
-                });
-                $this.remove();
-              },function(error){
-                layer.closeAll();
-                layer.open({
-                  content: error.message
-                  ,skin: 'msg'
-                  ,time: 2 //2秒后自动关闭
-                });
-                console.log(error);
-            })
+          var manage = $(".nav-text").attr("data-manage");
+          if(manage == 'y'){
+              layer.open({
+                  content: '确定删除这个种类'
+                  ,btn: ['删除', '取消']
+                  ,skin: 'footer'
+                  ,yes: function(index){
+                      layer.open({
+                          type: 2,
+                          content: '正在删除'
+                      });
+                      var  data = {id:id};
+                      cartypeDelete(data).then(function(result){
+                          layer.closeAll();
+                          getList();
+                          //提示
+                          layer.open({
+                              content: '删除成功'
+                              ,skin: 'msg'
+                              ,time: 2 //2秒后自动关闭
+                          });
+                          $this.remove();
+                      },function(error){
+                          layer.closeAll();
+                          layer.open({
+                              content: error.message
+                              ,skin: 'msg'
+                              ,time: 2 //2秒后自动关闭
+                          });
+                          console.log(error);
+                      })
+                  }
+              });
           }
-        });
       }, 800);
     }).on('touchend',".car-li",function(event) {
       clearTimeout(timer);
@@ -249,56 +252,27 @@
       var id = $(this).attr("data-id");
       window.location.href="/spec?id="+id;
     });
-    function getuser(){
+  function getuser() {
       $.ajax({
-           type: "GET",
-           url: 'user/getUser',
-           data :  {},
-           dataType: "json",
-           success : function(result) {
-               console.log(result);
-               var name = result.data;
-               console.log(name);
-               $.ajax({
-                 type: "GET",
-                 url: 'user/list',
-                 data :  {username : name},
-                 dataType: "json",
-                 success : function(result) {
-                    console.log(result);
-                    var data = result.data;
-                    var id;
-                    for(var i = 0; i < data.length;i++){
-                      if(name == data[i].username){
-                        id = data[i].objectId;
-                        $.ajax({
-                           type: "GET",
-                           url: 'user/detail',
-                           data :  {id : id},
-                           dataType: "json",
-                           success : function(result) {
-                              console.log(result);
-                              if(result.data.manage ==  'y'){
-                                $(".add").show();
-                              }
-                               },
-                             error:function(error){
-                                  console.log(error);
-                             }
-                         })
-                      }
-                    }
-                    },
-                   error:function(error){
-                        console.log(error);
-                   }
-               })
-           },
-           error:function(error){
-                console.log(error);
-           }
-       })
-    }
+          type: "GET",
+          url: 'user/getUser',
+          data :  {},
+          dataType: "json",
+          success : function(result) {
+              console.log(result);
+              if(result.data == 'y'){
+                  $(".add").show();
+                  $(".nav-text").attr("data-manage","y");
+              }
+              else {
+                  $(".nav-text").attr("data-manage","n");
+              }
+          },
+          error:function(error) {
+              console.log(error);
+          }
+      })
+  }
     getuser();
   </script>
 </body>

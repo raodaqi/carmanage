@@ -5,12 +5,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var AV = require('leanengine');
-var LCT = require('lc-build');
-var LCT = new LCT({
-  path:"routes/carinfo.js",
-  name:"CarInfo"
-})
-// LCT.build();
 
 var AS = require('api-send');
 AS.config.APPID = "58f369a3a0bb9f006a9e2e2a";
@@ -23,7 +17,13 @@ AS.config.HOST = "http://localhost:3000";
 require('./cloud');
 
 var app = express();
-
+var LCT = require('lc-build');
+var LCT = new LCT({
+    path:"routes/history.js",
+    name:"History"
+})
+// LCT.build();
+// return;
 // 设置模板引擎
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -53,7 +53,8 @@ app.get('/login', function(req, res) {
   res.render('login', { currentTime: new Date() });
 });
 app.get('/list', function(req, res) {
-  res.render('list', { currentTime: new Date() });
+    var user = req.currentUser;
+  res.render('list', { user: user });
 });
 app.get('/spec', function(req, res) {
   res.render('spec', { currentTime: new Date() });
@@ -61,8 +62,12 @@ app.get('/spec', function(req, res) {
 app.get('/type', function(req, res) {
   res.render('type', { currentTime: new Date() });
 });
+app.get('/mine', function(req, res) {
+    res.render('mine', { currentTime: new Date() });
+});
 // 可以将一类的路由单独保存在一个文件中
 // app.use('/car', require('./routes/car'));
+app.use('/history', require('./routes/history'));
 app.use('/carinfo', require('./routes/carinfo'));
 app.use('/cartype', require('./routes/cartype'));
 app.use('/carspec', require('./routes/carspec'));

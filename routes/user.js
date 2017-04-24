@@ -107,25 +107,28 @@ router.post('/login', function(req, res, next) {
 })
 
 router.get('/getUser',function(req, res, next){
-	var name = req.currentUser.get('username');
-	console.log(name);
-	if(name){
-		// res.json({
-  //     username: req.currentUser.get('username')
-  //   });
-  		var result = {
-		   	code : 200,
-		   	data : name,
-		    message : '获取用户名成功'
-		} 
-		res.send(result);
-	}
+	var manage = req.currentUser ? req.currentUser.get('manage'):"";
+    var id = req.currentUser ? req.currentUser.get('objectId'):"";
+    console.log(req.currentUser);
+    console.log(id);
+    if(manage){
+        // res.json({
+        //     username: req.currentUser.get('username')
+        //   });
+        var result = {
+            code : 200,
+            data : manage,
+            id : id,
+            message : '获取权限成功'
+        }
+        res.send(result);
+    }
     else{
-    	var result = {
-		   	code : 300,
-		    message : '用户未登录'
-		} 
-		res.send(result);
+        var result = {
+            code : 300,
+            message : '用户未登录'
+        }
+        res.send(result);
     }
 })
 
