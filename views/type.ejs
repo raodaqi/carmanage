@@ -87,6 +87,7 @@
     }
     .do-content {
         background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+        /*display: none;*/
     }
     .swiper-container {
         width: 100%;
@@ -185,9 +186,14 @@
         text-align: right;
         display: none;
     }
-    .do-content{
-        overflow-y: hidden;
-    }
+        body{
+            position:fixed;
+            height:100%;
+            top:0;
+            bottom:0;
+            width:100%;
+            overflow-y: hidden;
+        }
     </style>
 </head>
 <body>
