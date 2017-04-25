@@ -18,7 +18,8 @@
     "superagent-charset": "^1.1.1",
     "superagent":"2.0.0",
     "lc-build":"1.0.5",
-    "api-send":"1.0.2"
+    "api-send":"1.0.2",
+    "connect-multiparty":"2.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
