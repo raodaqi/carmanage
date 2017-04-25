@@ -333,6 +333,10 @@
       var discount = $("#discount").val();
       var num  = $("#num").val();
        var url;
+        layer.open({
+            type: 2,
+            content: '正在上传图片'
+        });
        $.ajax({
            type: "POST",
            url: 'carinfo/fileup',
@@ -342,6 +346,7 @@
            contentType: false,
            success : function(result) {
                console.log(result);
+               layer.closeAll();
                url = result;
                var data = {
                    spec_id : location.search.split("id=")[1],
