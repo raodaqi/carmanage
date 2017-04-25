@@ -96,7 +96,7 @@
   <div class="swiper-container">
     <div class="do-nav">
       <div class="name cssa16253a7b2bf4">福特 &bull; 进无止境</div>
-      <a href="login"><div class="iconfont icon-user"></div></a>
+      <a><div class="iconfont icon-user"></div></a>
     </div>
     <div class="swiper-wrapper">
       <div class="swiper-slide company">
@@ -300,7 +300,40 @@
     }
 
   });
-
+  $(".icon-user").on("click",function () {
+      var info = $(this).attr("data-info");
+      if(info == 1){
+          window.location.href = '/mine';
+      }
+      else {
+          window.location.href = '/login';
+      }
+  })
+  function getuser() {
+      $.ajax({
+          type: "GET",
+          url: 'user/getUser',
+          data :  {},
+          dataType: "json",
+          success : function(result) {
+              console.log(result);
+              if(result.code == 200){
+                  $(".icon-user").attr("data-info","1");
+              }
+              else{
+                  $(".icon-user").attr("data-info","0");
+              }
+              if(result.data == 'y'){
+                  $(".add").show();
+                  $(".del").show();
+              }
+          },
+          error:function(error) {
+              console.log(error);
+          }
+      })
+  }
+  getuser();
   </script>
 </body>
 </html>
