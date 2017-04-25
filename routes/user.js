@@ -109,8 +109,8 @@ router.post('/login', function(req, res, next) {
 router.get('/getUser',function(req, res, next){
 	var manage = req.currentUser ? req.currentUser.get('manage'):"";
     var id = req.currentUser ? req.currentUser.get('objectId'):"";
-    console.log(req.currentUser);
-    console.log(id);
+    // console.log(req.currentUser);
+    // console.log(id);
     if(manage){
         // res.json({
         //     username: req.currentUser.get('username')

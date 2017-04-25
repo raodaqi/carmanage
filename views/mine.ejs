@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>福特</title>
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+  <link href='http://at.alicdn.com/t/font_zdfcqhyvjk29y66r.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="/css/base.css" />
+  <link rel="stylesheet" type="text/css" href="/css/menu.css" />
+  <link href='/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="/css/common.css">
+</head>
+<style>
+  body{
+    /*background: #eeeeef;*/
+    background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+    overflow-y: hidden;
+  }
+  .car-li{
+    padding:20px 10px;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.3);
+    position: relative;
+    border-radius: 0.1rem;
+    font-size: 14px;
+    text-align: center;
+    color: #000;
+    margin-bottom: .5rem;
+  }
+  .car-li:visited,.car-li:active{
+    background-color: #eee;
+  }
+  .car-content{
+    width: 100%;
+    box-shadow: border-box;
+    padding:7px;
+    color: #b7b4b4;
+    border: 1px solid #dcdcdc;
+    margin-top: 10px;
+  }
+  .codrops-icon,.fa{
+    color: #322930;
+    font-size: 20px;
+  }
+  .fa.add{
+    float: right;
+    /*display: inline-block;*/
+    margin: 0.5em;
+    padding: 0em 0;
+    width: 1.5em;
+    text-decoration: none;
+    margin-top: 16px;
+    display: none;
+  }
+  .do-content{
+    background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+  }
+  .add-content{
+    transform:translateY(100%);
+  }
+  .nav-text{
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top:0;
+    line-height: 48px;
+    color: #000;
+    font-size: 16px;
+    pointer-events:none;
+  }
+  .add-box{
+    padding-top: 40px;
+  }
+  .layui-layer-content {
+    width: 60px;
+    height: 24px;
+    background: url(/layer/skin/default/loading-0.gif) no-repeat;
+    margin: 30px auto;
+  }
+  .user_img{
+    width: 100%;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+  }
+  .user_img img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+  .ri{
+    /*position: absolute;*/
+    right: 15px;
+    float: right;
+    display: inline-block;
+  }
+  .ri img{
+    width: 20px;
+    height:20px;
+  }
+  .tex{
+    color: #707070;
+    width: 100px;
+    display: inline-block;
+  }
+</style>
+<body>
+<div class="do-content content">
+  <div class="nav">
+    <a href="/" class="codrops-icon codrops-icon--prev"></a>
+    <div class="nav-text">个人中心</div>
+  </div>
+  
+  <div class="user_img">
+    <img src="img/tou.jpg">
+  </div>
+  
+  <div class="car-content car-list">
+    <div class="tex">历史记录查询</div>
+    <div class="ri">
+      <img src="img/you.png">
+    </div>
+  </div>
+</div>
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/layer/mobile/layer.js"></script>
+<script type="text/javascript" src="http://apimanage.leanapp.cn/api/link?app_id=58f369a3a0bb9f006a9e2e2a"> </script>
+<script>
+    $.fn.longPress = function(fn) {
+        var timeout = undefined;
+        var $this = this;
+        console.log($this);
+        for(var i = 0;i<$this.length;i++){
+            $this[i].addEventListener('touchstart', function(event) {
+                timeout = setTimeout(fn, 800);
+            }, false);
+            $this[i].addEventListener('touchend', function(event) {
+                clearTimeout(timeout);
+            }, false);
+        }
+    }
+</script>
+<script>
+//    function getList(){
+//        var id = $(".nav-text").attr("data-id");
+//        $.ajax({
+//            type: "GET",
+//            url: 'history/list',
+//            data :  {},
+//            dataType: "json",
+//            success : function(result) {
+//                console.log(result);
+//                var data = result.data;
+//                var list = '';
+//                for(var i = 0 ; i < data.length; i++){
+//                    if(data[i].user_id == id){
+//                        list += '<div class="car-li" data-id="'+data[i].type_id+'">'+data[i].name+'</div>';
+//                    }
+//                }
+//                if(!data.length){
+//                    list = '<div class="no-data">暂无数据...</div>';
+//                }
+//                $(".car-list").empty().append(list);
+//            },
+//            error:function(error) {
+//                layer.open({
+//                    content: error.message
+//                    ,skin: 'msg'
+//                    ,time: 2 //2秒后自动关闭
+//                });
+//                console.log(error);
+//            }
+//        })
+//        cartypeList({}).then(function(result){
+//            console.log(result);
+//            var data = result.data;
+//            var list = '';
+//            for(var i = 0 ; i < data.length; i++){
+//                list += '<div class="car-li" data-id="'+data[i].objectId+'">'+data[i].name+'</div>';
+//            }
+//
+//            if(!data.length){
+//                list = '<div class="no-data">暂无数据...</div>';
+//            }
+//
+//            $(".car-list").empty().append(list);
+//        },function(error){
+//            layer.open({
+//                content: error.message
+//                ,skin: 'msg'
+//                ,time: 2 //2秒后自动关闭
+//            });
+//            console.log(error);
+//        })
+//    }
+
+//    $(function(){
+//        getList();
+//    })
+    function getuser() {
+        $.ajax({
+            type: "GET",
+            url: 'user/getUser',
+            data :  {},
+            dataType: "json",
+            success : function(result) {
+                console.log(result);
+                layer.closeAll();
+                $(".nav-text").attr("data-id",result.id);
+                if(result.data == 'y'){
+                    $(".add").show();
+                    $(".nav-text").attr("data-manage","y");
+                }
+                else {
+                    $(".nav-text").attr("data-manage","n");
+                }
+            },
+            error:function(error) {
+                console.log(error);
+            }
+        })
+    }
+    getuser();
+    $(".car-list").on("click",function () {
+        window.location.href = '/history';
+    })
+</script>
+</body>
+</html>

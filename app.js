@@ -65,6 +65,9 @@ app.get('/type', function(req, res) {
 app.get('/mine', function(req, res) {
     res.render('mine', { currentTime: new Date() });
 });
+app.get('/history', function(req, res) {
+    res.render('history', { currentTime: new Date() });
+});
 // 可以将一类的路由单独保存在一个文件中
 // app.use('/car', require('./routes/car'));
 app.use('/history', require('./routes/history'));
