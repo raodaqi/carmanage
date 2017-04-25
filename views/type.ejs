@@ -184,7 +184,6 @@
         width: 100%;
         font-size: 20px;
         text-align: right;
-        display: none;
     }
         body{
             position:fixed;
@@ -206,9 +205,6 @@
         </div>
         <div class="swiper-container gallery-top">
             <div class="swiper-wrapper" id="wrapper1">
-              <!-- <div class="swiper-slide swiper-slide-duplicate" style="background-image: url(&quot;http://lorempixel.com/1200/1200/nature/6&quot;); width: 320px; margin-right: 10px;" data-swiper-slide-index="5">
-                <div class="del">x</div>
-              </div> -->
             </div>
             <!-- Add Arrows -->
             <div class="swiper-button-next swiper-button-white"></div>
@@ -216,7 +212,6 @@
         </div>
         <div class="swiper-container gallery-thumbs">
             <div class="swiper-wrapper" id="wrapper2">
-              <!-- <div class="swiper-slide" style="background-image: url(&quot;http://lorempixel.com/1200/1200/nature/5&quot;); width: 320px; margin-right: 10px;" data-swiper-slide-index="4"></div> -->
             </div>
         </div>
     </div>
@@ -250,6 +245,26 @@
     
     <!-- Initialize Swiper -->
     <script>
+        function getuser() {
+            $.ajax({
+                type: "GET",
+                url: 'user/getUser',
+                data :  {},
+                dataType: "json",
+                success : function(result) {
+                    console.log(result);
+                    $(".nav-text").attr("data-manage",result.data);
+                    if(result.data == 'y'){
+                        $(".add").show();
+                    }
+                    getList();
+                },
+                error:function(error) {
+                    console.log(error);
+                }
+            })
+        }
+        getuser();
     var galleryTop = new Swiper('.gallery-top', {
         nextButton: '.swiper-button-next',
         prevButton: '.swiper-button-prev',
@@ -297,10 +312,14 @@
     $(".addpho").on("click",function(){
         $("#photo").click();
     })
-    getList();
     function getList(){
       //获取当前id
         var spec_id = location.search.split("spec_id=")[1];
+        var del = '';
+        var manage = $(".nav-text").attr("data-manage");
+        if(manage == 'y'){
+            del = '<div class="del">x</div>'
+        }
         $.ajax({
            type: "GET",
            url: 'carinfo/list',
@@ -315,7 +334,7 @@
                for(var i = 0;i < data.length;i++){
                   if(data[i].spec_id == spec_id){
                     j = i+1;
-                    str +='<div class="swiper-slide" data-id="'+data[i].objectId+'" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'"><div class="del">x</div><div class="discount">优惠信息：'+data[i].discount+'</div><div class="num">车辆库存：'+data[i].num+'</div> </div>';
+                    str +='<div class="swiper-slide" data-id="'+data[i].objectId+'" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'">'+del+'<div class="discount">优惠信息：'+data[i].discount+'</div><div class="num">车辆库存：'+data[i].num+'</div> </div>';
                     str1 +='<div class="swiper-slide" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'"></div>';
                   }
                }
@@ -402,25 +421,6 @@
            }
        })
     })
-    function getuser() {
-        $.ajax({
-            type: "GET",
-            url: 'user/getUser',
-            data :  {},
-            dataType: "json",
-            success : function(result) {
-                console.log(result);
-                if(result.data == 'y'){
-                    $(".add").show();
-                    $(".del").show();
-                }
-            },
-            error:function(error) {
-                console.log(error);
-            }
-        })
-    }
-    getuser();
     $("body").on("click",".del",function(){
       var id = $(this).parent().attr("data-id");
         layer.open({
