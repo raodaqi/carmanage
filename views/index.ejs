@@ -304,13 +304,7 @@
 
   });
   $(".icon-user").on("click",function () {
-      var info = $(this).attr("data-info");
-      if(info == 1){
-          window.location.href = '/mine';
-      }
-      else {
-          window.location.href = '/login';
-      }
+      window.location.href = '/mine';
   })
   function getuser() {
       $.ajax({
@@ -320,15 +314,13 @@
           dataType: "json",
           success : function(result) {
               console.log(result);
-              if(result.code == 200){
-                  $(".icon-user").attr("data-info","1");
+              if(result.code == 300){
+                  window.location.href = '/login';
               }
-              else{
-                  $(".icon-user").attr("data-info","0");
-              }
-              if(result.data == 'y'){
-                  $(".add").show();
-                  $(".del").show();
+              else if(result.code == 200){
+                  if(result.data == 'y'){
+                      $(".add").show();
+                  }
               }
           },
           error:function(error) {

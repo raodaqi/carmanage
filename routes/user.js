@@ -179,6 +179,15 @@ router.get('/list', function(req, res, next) {
 		res.send(error);
 	}).catch(next);
 })
+router.get('/quit', function(req, res, next) {
+    req.currentUser.logOut();
+    res.clearCurrentUser();
+        var result = {
+            code : 200,
+            message : '登出成功'
+        }
+        res.send(result);
+})
 // AS.build("/user",router);
 module.exports = router;
 

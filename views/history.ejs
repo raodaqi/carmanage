@@ -245,15 +245,20 @@
           dataType: "json",
           success : function(result) {
               console.log(result);
-              user_id = result.id;
-              console.log(user_id);
-//              $(".nav").attr("data-id",result.id);
-              if(result.data == 'y'){
-                  $(".add").show();
-                  $(".nav-text").attr("data-manage","y");
+              if(result.code == 300){
+                  window.location.href = '/login';
               }
-              else {
-                  $(".nav-text").attr("data-manage","n");
+              else if(result.code == 200){
+                  user_id = result.id;
+                  console.log(user_id);
+//              $(".nav").attr("data-id",result.id);
+                  if(result.data == 'y'){
+                      $(".add").show();
+                      $(".nav-text").attr("data-manage","y");
+                  }
+                  else {
+                      $(".nav-text").attr("data-manage","n");
+                  }
               }
           },
           error:function(error) {

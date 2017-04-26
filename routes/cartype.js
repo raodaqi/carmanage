@@ -202,6 +202,27 @@ router.get('/detail', function(req, res, next) {
 		res.send(error);
 	}).catch(next);
 })
+router.get('/search', function(req, res, next) {
+    var data = {
+        keyword  : '关键字'
+    }
+    var data = validate(res,req,data);
+    if(!data){
+        return;
+    }
+    var query = new AV.Query('CarType');
+    query.contains('name',data.keyword);
+    query.find().then(function(results){
+        var result = {
+            code : 200,
+            data : results,
+            message : '获取成功'
+        }
+        res.send(result);
+    }, function(error) {
+        res.send(error);
+    }).catch(next);
+})
 
 // AS.build("/cartype",router);
 module.exports = router;

@@ -253,11 +253,16 @@
                 dataType: "json",
                 success : function(result) {
                     console.log(result);
-                    $(".nav-text").attr("data-manage",result.data);
-                    if(result.data == 'y'){
-                        $(".add").show();
+                    if(result.code == 300){
+                        window.location.href = '/login';
                     }
-                    getList();
+                    else if(result.code == 200){
+                        $(".nav-text").attr("data-manage",result.data);
+                        if(result.data == 'y'){
+                            $(".add").show();
+                        }
+                        getList();
+                    }
                 },
                 error:function(error) {
                     console.log(error);
