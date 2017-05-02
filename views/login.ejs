@@ -22,6 +22,10 @@
   .nav a{
     text-decoration:none;
   }
+  .content{
+    background: url("/img/login.jpg");
+    background-size: 100% 100%;
+  }
   .login-content,.signup-content{
     width: 80%;
     position: absolute;
@@ -57,7 +61,7 @@
 </style>
 <body>
   <div class="do-nav">
-    <a href="/"><div class="name cssa16253a7b2bf4">福特 &bull; 进无止境</div></a>
+    <a href="/" class="inde"><div class="name cssa16253a7b2bf4">福特 &bull; 进无止境</div></a>
     <div class="do-left">注册</div>
   </div>
   
@@ -65,15 +69,17 @@
     <div class="slider-content">
       <div class="login-content login">
         <form action="" id="loginForm">
-          <input type="text" class="form-control" name="username" id="name" placeholder="用户名">
+          <input type="text" class="form-control" name="username" id="name" placeholder="账号">
           <input type="password" class="form-control" name="password" id="password" placeholder="密码">
           <button type="button" class="btn btn-warning mt-30 btn-block btn-create">登录</button>
         </form>
       </div>
       <div class="signup-content signup">
         <form action="" id="signupForm">
-          <input type="text" class="form-control" name="username" id="name" placeholder="用户名">
+          <input type="text" class="form-control" name="username" id="name" placeholder="账号">
           <input type="password" class="form-control" name="password" id="password" placeholder="密码">
+          <input type="text" class="form-control" name="names" id="names" placeholder="用户名">
+          <input type="text" class="form-control" name="phone" id="phone" placeholder="联系方式">
           <button type="button" class="btn btn-warning mt-30 btn-block btn-signup">注册</button>
         </form>
       </div>
@@ -121,7 +127,7 @@
         },function(error){
           layer.closeAll();
           layer.open({
-            content: error.message
+            content: '登录失败'
             ,skin: 'msg'
             ,time: 2 //2秒后自动关闭
           });
@@ -143,11 +149,10 @@
             ,skin: 'msg'
             ,time: 2 //2秒后自动关闭
           });
-          window.location.href = '/mine';
         },function(error){
           layer.closeAll();
           layer.open({
-            content: error.message
+            content: '注册失败'
             ,skin: 'msg'
             ,time: 2 //2秒后自动关闭
           });
@@ -162,6 +167,12 @@
             dataType: "json",
             success : function(result) {
                 console.log(result);
+                if(result.code == 200){
+                    $(".inde").attr("href","/");
+                }
+                else if(result.code == 300){
+                    $(".inde").attr("href","");
+                }
                 if(result.data == 'y'){
                     $(".add").show();
                     $(".nav-text").attr("data-manage","y");

@@ -50,13 +50,16 @@ function validate(res,req,data){
 // 新建用户
 router.post('/signup', function(req, res, next) {
 	var data = {
-		username : "用户名",
+		username : "账号",
 		password : "密码",
+		name : "用户名",
+		phone : "联系方式"
     }
 	var data = validate(res,req,data);
 	if(!data){
 		return;
 	}
+	console.log(data);
 	// 新建 AVUser 对象实例
   	var user = new AV.User();
   	// 设置用户名
@@ -64,14 +67,30 @@ router.post('/signup', function(req, res, next) {
   	// 设置密码
   	user.setPassword(data.password);
   	// 设置邮箱
+    // user.set("name",data.name);
+    // user.set("phone",data.phone);
   	// user.setEmail(data.email);
 	user.signUp().then(function (loginedUser) {
-    	var result = {
-		   	code : 200,
-		   	data : loginedUser,
-		    message : '注册成功'
-		}
-		res.send(result);
+		console.log(loginedUser);
+        // var user = new AV.User();
+        // // 设置用户名
+        // user.setUsername(data.username);
+        // // 设置密码
+        // user.setPassword(data.password);
+        // AV.User.logIn(data.username, data.password).then(function (loginedUser) {
+        //     res.saveCurrentUser(loginedUser);
+        //     loginedUser.set("name",data.name);
+        //     loginedUser.set("phone",data.phone);
+        //     loginedUser.save();
+            var result = {
+                code : 200,
+                data : loginedUser,
+                message : '注册成功'
+            }
+            res.send(result);
+        // }, function (error) {
+        //     res.send(error)
+        // });
   	}, function (error) {
   		res.send(error)
   	});

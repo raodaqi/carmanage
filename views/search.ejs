@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>福特</title>
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+  <link href='http://at.alicdn.com/t/font_zdfcqhyvjk29y66r.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="/css/base.css" />
+  <link rel="stylesheet" type="text/css" href="/css/menu.css" />
+  <link href='/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="/css/common.css">
+</head>
+<style>
+  body{
+    /*background: #eeeeef;*/
+    background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+    overflow-y: hidden;
+  }
+  .nav a{
+    text-decoration:none;
+  }
+  body{
+    position:fixed;
+    height:100%;
+    top:0;
+    bottom:0;
+    width:100%;
+    overflow-y: hidden;
+  }
+  .car-li{
+    padding:20px 10px;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.3);
+    position: relative;
+    border-radius: 0.1rem;
+    font-size: 14px;
+    text-align: center;
+    color: #000;
+    margin-bottom: .5rem;
+  }
+  .car-li:visited,.car-li:active{
+    background-color: #eee;
+  }
+  .car-content{
+    width: 100%;
+    box-shadow: border-box;
+    padding:10px;
+  }
+  .codrops-icon,.fa{
+    color: #322930;
+    font-size: 20px;
+  }
+  .fa.add{
+    float: right;
+    /*display: inline-block;*/
+    margin: 0.5em;
+    padding: 0em 0;
+    width: 2.5em;
+    text-decoration: none;
+    margin-top: 16px;
+    font-size: 15px;
+  }
+  .do-content{
+    background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+  }
+  .add-content{
+    transform:translateY(100%);
+  }
+  .nav-text{
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top:0;
+    line-height: 48px;
+    color: #000;
+    font-size: 16px;
+    /*pointer-events:none;*/
+  }
+  .add-box{
+    padding-top: 40px;
+  }
+  .layui-layer-content {
+    width: 60px;
+    height: 24px;
+    background: url(/layer/skin/default/loading-0.gif) no-repeat;
+    margin: 30px auto;
+    display: none;
+  }
+  .search{
+    height: 30px;
+    width: 100%;
+  }
+  .search input{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 10px;
+    border-color: #fff;
+    border: 0;
+    padding:5px 0px;
+    font-size: 10px;
+    text-align: center;
+  }
+  .fa-plus:before{
+    content: '';
+  }
+  .nav-text input{
+    height: 30px;
+    line-height: 30px;
+    border: 0;
+    border-radius: 10px;
+    border-color: #ffffff;
+    text-align: center;
+    padding:5px 0px;
+  }
+  .codrops-icon--prev{
+    position: fixed;
+    left: 0;
+    z-index: 10;
+  }
+</style>
+<body>
+  <div class="do-content content">
+    <div class="nav">
+      <div class="codrops-icon codrops-icon--prev"></div>
+      <div class="nav-text"><input placeholder="请输入搜索信息" id="s_text" data-flag = '0'></div>
+      <div class="fa fa-plus add">搜索</div>
+    </div>
+
+    <!--<div class="search">-->
+      <!--<input placeholder="请输入搜索信息">-->
+    <!--</div>-->
+
+    <div class="car-content car-list">
+      <div class="spec"></div>
+      <div class="type"></div>
+      <!-- <div class="no-data">暂无数据...</div> -->
+      <div id="" class="layui-layer-content layui-layer-loading0"></div>
+    </div>
+  </div>
+
+
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/layer/mobile/layer.js"></script>
+  <script type="text/javascript" src="/js/common.js"> </script>
+  <script>
+    $.fn.longPress = function(fn) {
+      var timeout = undefined;
+      var $this = this;
+      console.log($this);
+      for(var i = 0;i<$this.length;i++){
+          $this[i].addEventListener('touchstart', function(event) {
+              timeout = setTimeout(fn, 800);
+              }, false);
+          $this[i].addEventListener('touchend', function(event) {
+              clearTimeout(timeout);
+              }, false);
+      }
+    }
+  </script>
+  <script>
+  function doAddContent(type){
+    if(type == 1){
+      $(".add-content").css({
+        "transform" : "translateY(0%)"
+      })
+    }else{
+      $(".add-content").css({
+        "transform" : "translateY(100%)"
+      })
+    }
+  }
+
+    $(".add").on("click",function(){
+      doAddContent(1);
+    })
+
+  $(".codrops-icon--prev").on("click",function () {
+      history.go(-1);
+  })
+//    $(".back").on("click",function(){
+//      doAddContent();
+//    })
+//
+//    $(".btn-create").on("click",function(){
+//      layer.open({
+//        type: 2,
+//        content: '正在添加'
+//      });
+//      var data = $("#addForm").serializeArray();
+//      cartypeAdd(data).then(function(result){
+//          layer.closeAll();
+//          getList();
+//          //提示
+//          layer.open({
+//            content: '添加成功'
+//            ,skin: 'msg'
+//            ,time: 2 //2秒后自动关闭
+//          });
+//          doAddContent();
+//
+//        },function(error){
+//          layer.closeAll();
+//          layer.open({
+//            content: error.message
+//            ,skin: 'msg'
+//            ,time: 2 //2秒后自动关闭
+//          });
+//          console.log(error);
+//      })
+//    })
+
+
+    function getList(){
+      var list1 = '';
+      var keyword = $("#s_text").val();
+      console.log(keyword);
+        layer.open({
+            type: 2,
+            content: '正在查询'
+        });
+        $.ajax({
+            type: "GET",
+            url: 'carspec/search',
+            data: {keyword : keyword},
+            dataType: "json",
+            success : function(result) {
+                console.log(result);
+                var data = result.data;
+                var list = '';
+                if(data.length > 0){
+                    $("#s_text").attr("data-flag",1);
+                }
+                for(var i = 0 ; i < data.length; i++){
+                    list += '<div class="car-li" data-id="'+data[i].objectId+'">'+data[i].name+'</div>';
+                }
+                 $(".spec").append(list);
+            },
+            error : function(error){
+                layer.open({
+                    content: error.message
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+                console.log(error);
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: 'cartype/search',
+            data: {keyword : keyword},
+            dataType: "json",
+            success : function(result) {
+                console.log(result);
+                layer.closeAll();
+                var data = result.data;
+                var list2 = '';
+                if(data.length > 0){
+                    $("#s_text").attr("data-flag",1);
+                }
+                for(var i = 0 ; i < data.length; i++){
+                    list2+= '<div class="car-li" data-id="'+data[i].objectId+'">'+data[i].name+'</div>';
+                }
+                $(".type").append(list2);
+                if($("#s_text").attr("data-flag") == 0){
+                    var lists = '<div class="no-data">暂无数据...</div>';
+                    $(".car-list").empty().append(lists);
+                }
+            },
+            error : function(error){
+                layer.closeAll();
+                layer.open({
+                    content: error.message
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+                console.log(error);
+            }
+        });
+    }
+
+    $(".add").on("click",function () {
+        $(".layui-layer-content").show();
+        getList();
+        $(".layui-layer-content").hide();
+    })
+
+
+    $(".spec").on("click",".car-li",function(event) {
+      // clearTimeout(timer);
+      var id = $(this).attr("data-id");
+      window.location.href="type?spec_id=="+id;
+    });
+  $(".type").on("click",".car-li",function(event) {
+      // clearTimeout(timer);
+      var id = $(this).attr("data-id");
+      window.location.href="/spec?id="+id;
+  });
+  function getuser() {
+      $.ajax({
+          type: "GET",
+          url: 'user/getUser',
+          data :  {},
+          dataType: "json",
+          success : function(result) {
+              console.log(result);
+              if(result.code == 300){
+                  window.location.href = '/login';
+              }
+          },
+          error:function(error) {
+              console.log(error);
+          }
+      })
+  }
+    getuser();
+  </script>
+</body>
+</html>
