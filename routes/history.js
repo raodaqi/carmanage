@@ -48,18 +48,18 @@ router.post('/add', function(req, res, next) {
 	if(!data){
 		return;
 	}
-	var query = new AV.Query(History);
-	query.equalTo('type_id',data.type_id);
-	query.find().then(function(results) {
-		//判断是否存在
-		if(results.length){
-			//存在
-			var result = {
-		   		code : 601,
-		    	message : '项目已存在'
-			}
-			res.send(result);
-		}else{
+	// var query = new AV.Query(History);
+	// query.equalTo('type_id',data.type_id);
+	// query.find().then(function(results) {
+	// 	//判断是否存在
+	// 	if(results.length){
+	// 		//存在
+	// 		var result = {
+	// 	   		code : 601,
+	// 	    	message : '项目已存在'
+	// 		}
+	// 		res.send(result);
+	// 	}else{
 			//不存在
 			//创建应用
 			var addObj = new History();
@@ -80,14 +80,14 @@ router.post('/add', function(req, res, next) {
 		    	}
 		    	res.send(result);
 			});
-		}
-	}, function(err) {
-		if (err.code === 101) {
-			res.send(err);
-  		} else {
-      		next(err);
-    	}
-	}).catch(next);
+	// 	}
+	// }, function(err) {
+	// 	if (err.code === 101) {
+	// 		res.send(err);
+ //  		} else {
+ //      		next(err);
+ //    	}
+	// }).catch(next);
 })
 
 // 删除
@@ -157,6 +157,11 @@ router.get('/list', function(req, res, next) {
 	var query = new AV.Query('History');
 	query.skip(skip);
 	query.limit(limit);
+	// console.log(req.currentUser);
+	var id = req.currentUser ? req.currentUser.get('objectId'):"";
+	if(id){
+		query.equalTo("user_id",id);
+	}
 	query.find().then(function (results) {
 		// 删除成功
 		var result = {

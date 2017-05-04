@@ -50,6 +50,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/login', function(req, res) {
+  console.log(req.currentUser);
   res.render('login', { currentTime: new Date() });
 });
 app.get('/list', function(req, res) {

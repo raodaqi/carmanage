@@ -46,20 +46,22 @@ function validate(res,req,data){
 	}
 	return data;
 }
+// var currentUser = AV.User.current();
 
 // 新建用户
 router.post('/signup', function(req, res, next) {
+	// console.log(req.currentUser);
 	var data = {
 		username : "账号",
 		password : "密码",
-		name : "用户名",
-		phone : "联系方式"
+		name 	 : "用户名",
+		phone 	 : "联系方式"
     }
 	var data = validate(res,req,data);
 	if(!data){
 		return;
 	}
-	console.log(data);
+	// console.log(data);
 	// 新建 AVUser 对象实例
   	var user = new AV.User();
   	// 设置用户名
@@ -67,21 +69,18 @@ router.post('/signup', function(req, res, next) {
   	// 设置密码
   	user.setPassword(data.password);
   	// 设置邮箱
-    // user.set("name",data.name);
-    // user.set("phone",data.phone);
+    user.set("name",data.name);
+    user.set("phone",data.phone);
   	// user.setEmail(data.email);
 	user.signUp().then(function (loginedUser) {
-		console.log(loginedUser);
+		// console.log(loginedUser);
         // var user = new AV.User();
         // // 设置用户名
         // user.setUsername(data.username);
         // // 设置密码
         // user.setPassword(data.password);
         // AV.User.logIn(data.username, data.password).then(function (loginedUser) {
-        //     res.saveCurrentUser(loginedUser);
-        //     loginedUser.set("name",data.name);
-        //     loginedUser.set("phone",data.phone);
-        //     loginedUser.save();
+            res.saveCurrentUser(loginedUser);
             var result = {
                 code : 200,
                 data : loginedUser,
@@ -108,11 +107,12 @@ router.post('/login', function(req, res, next) {
 	}
 	// 新建 AVUser 对象实例
   	var user = new AV.User();
-  	// 设置用户名
-  	user.setUsername(data.username);
-  	// 设置密码
-  	user.setPassword(data.password);
+  	// // 设置用户名
+  	// user.setUsername(data.username);
+  	// // 设置密码
+  	// user.setPassword(data.password);
   	AV.User.logIn(data.username, data.password).then(function (loginedUser) {
+  		console.log(loginedUser);
   		res.saveCurrentUser(loginedUser);
     	var result = {
 		   	code : 200,
@@ -130,13 +130,14 @@ router.get('/getUser',function(req, res, next){
     var id = req.currentUser ? req.currentUser.get('objectId'):"";
     // console.log(req.currentUser);
     // console.log(id);
-    if(manage){
+    if(id){
         // res.json({
         //     username: req.currentUser.get('username')
         //   });
         var result = {
             code : 200,
             data : manage,
+            user : req.currentUser,
             id : id,
             message : '获取权限成功'
         }

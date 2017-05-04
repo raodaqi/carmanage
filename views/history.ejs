@@ -28,7 +28,7 @@
     position: relative;
     border-radius: 0.1rem;
     font-size: 14px;
-    text-align: center;
+    /*text-align: center;*/
     color: #000;
     margin-bottom: .5rem;
   }
@@ -79,6 +79,18 @@
     background: url(/layer/skin/default/loading-0.gif) no-repeat;
     margin: 30px auto;
   }
+  .car-li .left{
+    display: inline-block;
+    position: relative;
+    left:0;
+    /*float: left;*/
+  }
+  .car-li .right{
+    float: right;
+    font-size: 12px;
+    color: #777;
+    margin-top: 4px;
+  }
 </style>
 <body>
   <div class="do-content content">
@@ -125,6 +137,29 @@
     }
   }
 
+  function formatDate(format, timestamp, full) {
+    format = format.toLowerCase();
+    if (!format) format = "y-m-d h:i:s";
+
+    function zeroFull(str) {
+        // console.log(full);
+        // return full ? (str >= 10 ? str : ('0' + str)) : str;
+        return (str >= 10 ? str : ('0' + str));
+    }
+    var time = new Date(timestamp),
+        o = {
+            y: time.getFullYear(),
+            m: zeroFull(time.getMonth() + 1),
+            d: zeroFull(time.getDate()),
+            h: zeroFull(time.getHours()),
+            i: zeroFull(time.getMinutes()),
+            s: zeroFull(time.getSeconds())
+        };
+    return format.replace(/([a-z])(\1)*/ig, function(m) {
+        return o[m];
+    });
+  };
+
   var user_id ;
   function getList() {
       $.ajax({
@@ -138,7 +173,7 @@
               var list = '';
               for (var i = 0; i < data.length; i++) {
                   if (data[i].user_id == user_id) {
-                      list += '<div class="car-li" data-id="' + data[i].type_id + '">' + data[i].name + '</div>';
+                      list += '<div class="car-li" data-id="' + data[i].type_id + '"><div class="left">' + data[i].name + '</div><div class="right">'+formatDate("y-m-d h:i:s",data[i].createdAt)+'</div></div>';
                   }
               }
               if (!data.length) {

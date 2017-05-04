@@ -85,9 +85,15 @@
   }
   .user_img{
     width: 100%;
-    height: 60px;
+    padding:20px 0;
     text-align: center;
-    line-height: 60px;
+  }
+  .user_name{
+    font-size: 22px;
+  }
+  .user_phone{
+    font-size: 14px;
+    color: #999999;
   }
   .user_img img{
     width: 60px;
@@ -130,6 +136,9 @@
     -khtml-opacity: 0.5;
     opacity: 0.5;
   }
+  .car-list{
+    cursor: pointer;
+  }
 </style>
 <body>
 <div class="do-content content">
@@ -139,13 +148,16 @@
   </div>
   
   <div class="user_img">
-    <img src="img/tou.jpg">
+    <!-- <img src="img/tou.jpg"> -->
+    <div class="user_name"></div>
+    <div class="user_phone"></div>
   </div>
   
   <div class="car-content car-list">
-    <div class="tex">用户名<span></span></div>
-    <div class="tex">联系方式<span></span></div>
+    <!-- <div class="tex">用户名<span></span></div>
+    <div class="tex">联系方式<span></span></div> -->
     <div class="tex">历史记录查询</div>
+    <!-- 历史记录查询 -->
     <div class="ri">
       <img src="img/you.png">
     </div>
@@ -240,8 +252,7 @@
                 console.log(result);
                 if(result.code == 300){
                     window.location.href = '/login';
-                }
-                else if(result.code == 200){
+                }else if(result.code == 200){
                     $(".nav-text").attr("data-id",result.id);
                     if(result.data == 'y'){
                         $(".add").show();
@@ -250,6 +261,8 @@
                     else {
                         $(".nav-text").attr("data-manage","n");
                     }
+                    $(".user_name").text(result.user.name);
+                    $(".user_phone").text(result.user.phone);
                 }
             },
             error:function(error) {
