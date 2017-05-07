@@ -63,6 +63,9 @@ app.get('/spec', function(req, res) {
 app.get('/type', function(req, res) {
   res.render('type', { currentTime: new Date() });
 });
+app.get('/detail', function(req, res) {
+  res.render('detail', { currentTime: new Date() });
+});
 app.get('/mine', function(req, res) {
     res.render('mine', { currentTime: new Date() });
 });

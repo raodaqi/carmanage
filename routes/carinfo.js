@@ -1,6 +1,7 @@
 'use strict';
 var router = require('express').Router();
 var AV = require('leanengine');
+var Promise = require("bluebird");
 
 var fs = require('fs');
 
@@ -55,59 +56,167 @@ router.post('/fileup',multipartMiddleware, function(req, res, next){
             res.send(url);
         });
     });
-}) 
+})
+
+function saveFile(i,fileArray,filePartData,callback){
+		if(i >= fileArray.length){
+			return callback.success(filePartData);
+		}
+		var fileData = fileArray[i];
+		// console.log(fileData);
+		fs.readFile(fileData.path, function(err, data){
+	        if(err){
+						var data = "读取文件失败";
+						return callback.error(data);
+					}
+	        var base64Data = data.toString('base64');
+	        var theFile = new AV.File(fileData.name, {base64: base64Data});
+	        theFile.save().then(function(theFileData){
+							// console.log(theFileData);
+	        		var url = theFileData.attributes.url;
+							filePartData[fileData.fieldName] = url;
+							saveFile(i+1,fileArray,filePartData,callback);
+	        },function(error){
+						console.log(error);
+					});
+	    });
+		// });
+}
+
 // 新增
-router.post('/add', function(req, res, next) {
+router.post('/add',multipartMiddleware,function(req, res, next) {
 	var data = {
 		spec_id : '规格id',
 		discount : '优惠信息',
-		url : '图片链接',
 		num :'库存'
     }
-	var data = validate(res,req,data);
-	if(!data){
-		return;
-	}
-	var query = new AV.Query(CarInfo);
-	query.equalTo('url',data.url);
-	query.find().then(function(results) {
-		//判断是否存在
-		if(results.length){
-			//存在
-			var result = {
-		   		code : 601,
-		    	message : '项目已存在'
-			}
-			res.send(result);
-		}else{
-			//不存在
-			//创建应用
-			var addObj = new CarInfo();
-			for(var key in data){
-				addObj.set(key,data[key]);
-			}
-			addObj.save().then(function (addResult) {
-		    	var result = {
-		    		code : 200,
-		    		data : addResult,
-		    		message : '保存成功'
-		    	}
-		    	res.send(result);
-			}, function (error) {
-		    	var result = {
-		    		code : 500,
-		    		message : '保存出错'
-		    	}
-		    	res.send(result);
-			});
+		// console.log(req.body);
+		var data = validate(res,req,data);
+		if(!data){
+			return;
 		}
-	}, function(err) {
-		if (err.code === 101) {
-			res.send(err);
-  		} else {
-      		next(err);
-    	}
-	}).catch(next);
+	// var photo = req.files.photo;
+	var fileData = {};
+	var files = [];
+	for(var i in req.files){
+		files.push(req.files[i]);
+	}
+	saveFile(0,files,fileData,{
+		success:function(fileData){
+			if(!fileData || (fileData && !fileData.photo)){
+				var result = {
+					code : '302',
+					message : '缺少车型图片',
+					data : []
+				}
+				res.send(result);
+				return;
+			}else if(fileData && !fileData.car_spec){
+				var result = {
+					code : '302',
+					message : '缺少配置图片',
+					data : []
+				}
+				res.send(result);
+				return;
+			}
+			data.url = fileData.photo;
+			data.car_spec = fileData.car_spec;
+			console.log(data);
+			var query = new AV.Query(CarInfo);
+			query.equalTo('url',data.url);
+			query.find().then(function(results) {
+				//判断是否存在
+				if(results.length){
+					//存在
+					var result = {
+				   		code : 601,
+				    	message : '项目已存在'
+					}
+					res.send(result);
+				}else{
+					//不存在
+					//创建应用
+					var addObj = new CarInfo();
+					for(var key in data){
+						addObj.set(key,data[key]);
+					}
+					var car_all_img = [];
+					addObj.set("car_all_img",car_all_img);
+					addObj.save().then(function (addResult) {
+				    	var result = {
+				    		code : 200,
+				    		data : addResult,
+				    		message : '保存成功'
+				    	}
+				    	res.send(result);
+					}, function (error) {
+				    	var result = {
+				    		code : 500,
+				    		message : '保存出错'
+				    	}
+				    	res.send(result);
+					});
+				}
+			}, function(err) {
+				if (err.code === 101) {
+					res.send(err);
+		  		} else {
+		      		next(err);
+		    	}
+			}).catch(next);
+		},
+		error:function(error){
+			console.log(error);
+		}
+	});
+	// console.log(req.body);
+	// console.log(fileData);
+	// return;
+	// var data = validate(res,req,data);
+	// if(!data){
+	// 	return;
+	// }
+	// var query = new AV.Query(CarInfo);
+	// query.equalTo('url',data.url);
+	// query.find().then(function(results) {
+	// 	//判断是否存在
+	// 	if(results.length){
+	// 		//存在
+	// 		var result = {
+	// 	   		code : 601,
+	// 	    	message : '项目已存在'
+	// 		}
+	// 		res.send(result);
+	// 	}else{
+	// 		//不存在
+	// 		//创建应用
+	// 		var addObj = new CarInfo();
+	// 		for(var key in data){
+	// 			addObj.set(key,data[key]);
+	// 		}
+	// 		addObj.save().then(function (addResult) {
+	// 	    	var result = {
+	// 	    		code : 200,
+	// 	    		data : addResult,
+	// 	    		message : '保存成功'
+	// 	    	}
+	// 	    	res.send(result);
+	// 		}, function (error) {
+	// 	    	var result = {
+	// 	    		code : 500,
+	// 	    		message : '保存出错'
+	// 	    	}
+	// 	    	res.send(result);
+	// 		});
+	// 	}
+	// }, function(err) {
+	// 	if (err.code === 101) {
+	// 		res.send(err);
+  // 		} else {
+  //     		next(err);
+  //   	}
+	// }).catch(next);
 })
 
 // 删除
@@ -137,7 +246,7 @@ router.get('/delete', function(req, res, next) {
 router.post('/edit', function(req, res, next) {
 	var data = {
 		id  : 'id'
-    }
+  }
 	var data = validate(res,req,data);
 	if(!data){
 		return;
@@ -145,6 +254,9 @@ router.post('/edit', function(req, res, next) {
 	var editObj = AV.Object.createWithoutData('CarInfo', data.id);
 	for(var key in data){
 		editObj.set(key,data[key]);
+	}
+	if(req.body.car_all_img){
+		editObj.set("car_all_img",JSON.parse(req.body.car_all_img));
 	}
 	editObj.save().then(function (editResult) {
 		var result = {
@@ -178,6 +290,7 @@ router.get('/list', function(req, res, next) {
 	var query = new AV.Query('CarInfo');
 	query.skip(skip);
 	query.limit(limit);
+	query.equalTo("spec_id",data.spec_id);
 	query.find().then(function (results) {
 		// 删除成功
 		var result = {

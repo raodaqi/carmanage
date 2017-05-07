@@ -22,10 +22,9 @@ html,body{
     color: white;
 }
 
-.mt-30{
-	margin-top: 30px;
-}
-
+.mt-10{margin-top: 10px;}
+.mt-15{margin-top: 15px;}
+.mt-30{margin-top: 30px;}
 .do-content{
     top: 0;
     position: absolute;

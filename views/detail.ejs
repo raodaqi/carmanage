@@ -39,6 +39,7 @@
         font-size: 20px;
     }
     .do-content {
+      margin-top: 48px;
         background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
     }
     .nav-text {
@@ -74,6 +75,7 @@
     }
     .nav-text {
         position: absolute;
+        z-index: 2;
         text-align: center;
         width: 100%;
         top: 0;
@@ -83,7 +85,15 @@
         pointer-events: none;
     }
     .add-content {
+      margin-top: 0;
+      z-index: 400;
         transform: translateY(100%);
+    }
+    .car-content{
+      margin-top: 48px;
+    }
+    .car-spec-content {
+        transform: translateX(100%);
     }
     .do-content {
         background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
@@ -199,21 +209,39 @@
             width:100%;
             overflow-y: hidden;
         }
-        .swiper-slide-click{
+        .nav-text-li{
+          display: inline-block;
+          color: #aaa;
+          margin-left: 10px;
+          pointer-events: auto;
+        }
+        .nav-text-li.active{
+          color: #000;
+        }
+        .nav{
           position: absolute;
+          z-index: 200;
           width: 100%;
-          height: 100%;
+          height: 48px;
+          /*background-color: #b3d0f0;*/
+          background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+        }
+        .car-spec{
+          width: 100%;
         }
     </style>
 </head>
 <body>
     <!-- Swiper -->
+    <div class="nav">
+      <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
+      <div class="nav-text">
+        <div class="nav-text-li active">看车</div>
+        <div class="nav-text-li">配置</div>
+      </div>
+      <a class="fa fa-plus add"></a>
+    </div>
     <div class="do-content content">
-        <div class="nav">
-          <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
-          <div class="nav-text">测试规格</div>
-          <a class="fa fa-plus add"></a>
-        </div>
         <div class="swiper-container gallery-top">
             <div class="swiper-wrapper" id="wrapper1">
             </div>
@@ -226,6 +254,9 @@
             </div>
         </div>
     </div>
+    <div class="do-content car-spec-content">
+        <img src="" class="car-spec" alt="">
+    </div>
     <div class="do-content add-content">
         <div class="nav">
             <a class="codrops-icon codrops-icon--prev back"></a>
@@ -236,15 +267,8 @@
                 <form action="" id="addForm" enctype="multipart/form-data">
                     <input type="text "  class="form-control" name="spec_id" id="spec_id" placeholder="spec_id"  style="display:none">
                     <div class="addp">
-                      <input type="file"  class="form-control" name="photo" id="photo" placeholder="请添加图片" onchange="preview(this)" style="display:none">
-                      <div class="add-pho-text">添加车型图片：</div>
-                      <img src="img/pho.png" class="addpho">
-                    </div>
-                    <input type="text" class="form-control" name="discount" id="discount" placeholder="请输入优惠信息">
-                    <input type="text" class="form-control mt-10" name="num" id="num" placeholder="请输入车辆库存">
-                    <div class="addp mt-15">
-                      <input type="file" class="form-control" name="car_spec" id="car_spec" placeholder="添加配置图片" onchange="preview(this)" style="display:none">
-                      <div class="add-pho-text">添加配置图片：</div>
+                      <input type="file"  class="form-control" name="photo" id="photo" placeholder="请添加看车图片" onchange="preview(this)" style="display:none">
+                      <div class="add-pho-text">请添加看车图片：</div>
                       <img src="img/pho.png" class="addpho">
                     </div>
                     <button type="button" class="btn btn-warning mt-30 btn-block btn-create">添加</button>
@@ -313,6 +337,8 @@
     }
   }
 
+  var CAR_ALL_IMG = [];
+
     $(".add").on("click",function(){
       doAddContent(1);
     })
@@ -336,9 +362,24 @@
     $(".addpho").on("click",function(){
         $(this).parent().find("input").click();
     })
+    $(".nav-text-li").on("click",function(){
+      var text = $(this).text();
+      $(".nav-text-li").removeClass("active");
+      $(this).addClass("active");
+      if(text == "配置"){
+        $(".car-spec-content").css({
+          "transform" : "translateX(0%)"
+        })
+      }else{
+        $(".car-spec-content").css({
+          "transform" : "translateX(100%)"
+        })
+      }
+    })
+
     function getList(){
       //获取当前id
-        var spec_id = location.search.split("spec_id=")[1];
+        var id = location.search.split("id=")[1];
         var del = '';
         var manage = $(".nav-text").attr("data-manage");
         if(manage == 'y'){
@@ -347,8 +388,8 @@
         $("#spec_id").val(spec_id);
         $.ajax({
            type: "GET",
-           url: 'carinfo/list',
-           data: {spec_id : spec_id},
+           url: 'carinfo/detail',
+           data: {id : id},
            dataType: "json",
            success : function(result) {
                console.log(result);
@@ -356,12 +397,11 @@
                var str = '';
                var str1 = '';
                var j;
-               for(var i = 0;i < data.length;i++){
-                  if(data[i].spec_id == spec_id){
-                    j = i+1;
-                    str +='<div class="swiper-slide" data-id="'+data[i].objectId+'" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'">'+del+'<div class="discount">优惠信息：'+data[i].discount+'</div><div class="swiper-slide-click" data-id="'+data[i].objectId+'"></div><div class="num">车辆库存：'+data[i].num+'</div> </div>';
-                    str1 +='<div class="swiper-slide" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'"></div>';
-                  }
+               CAR_ALL_IMG = data.car_all_img ? data.car_all_img : CAR_ALL_IMG;
+               $(".car-spec").attr("src",data.car_spec);
+               for(var i = 0;i < CAR_ALL_IMG.length;i++){
+                    str +='<div class="swiper-slide" data-url="'+CAR_ALL_IMG[i]+'" style="background-image:url('+CAR_ALL_IMG[i]+')" data-swiper-slide-index="'+i+'">'+del+'</div>';
+                    str1 +='<div class="swiper-slide" style="background-image:url('+CAR_ALL_IMG[i]+')" data-swiper-slide-index="'+i+'"></div>';
                }
                // console.log(str);
                $("#wrapper1").append(str);
@@ -389,23 +429,47 @@
         });
        $.ajax({
            type: "POST",
-          //  url: 'carinfo/fileup',
-           url: 'carinfo/add',
+           url: 'carinfo/fileup',
            cache: false,
            data: new FormData($('#addForm')[0]),
            processData: false,
            contentType: false,
            success : function(result) {
-              layer.closeAll();
-               //提示
-              layer.open({
-                content: '添加成功'
-                ,skin: 'msg'
-                ,time: 2 //2秒后自动关闭
-              });
-              window.location.reload();
+             var url = result;
+             CAR_ALL_IMG.push(url);
+             var id = location.search.split("id=")[1];
+             var data = {
+               id : id,
+               car_all_img:JSON.stringify(CAR_ALL_IMG)
+             }
+             $.ajax({
+                 type: "POST",
+                 url: 'carinfo/edit',
+                 data: data,
+                 dataType: "json",
+                 success : function(result) {
+                   layer.closeAll();
+                    //提示
+                   layer.open({
+                     content: '添加成功'
+                     ,skin: 'msg'
+                     ,time: 2 //2秒后自动关闭
+                   });
+                   window.location.reload();
+                 },
+               error:function(error){
+                 layer.closeAll();
+                 layer.open({
+                     content: error.message
+                     ,skin: 'msg'
+                     ,time: 2 //2秒后自动关闭
+                 });
+                 console.log(error);
+               }
+             })
            },
            error:function(error){
+               layer.closeAll();
                 layer.open({
                     content: error.message
                     ,skin: 'msg'
@@ -415,23 +479,32 @@
            }
        })
     })
-    $(document).on("click",".swiper-slide-click",function(){
-      console.log($(this).attr("data-id"));
-      var id = $(this).attr("data-id");
-      window.location.href="detail?id="+id;
-    })
     $("body").on("click",".del",function(){
-      var id = $(this).parent().attr("data-id");
+      var url = $(this).parent().attr("data-url");
         layer.open({
-            content: '确定删除这个车辆'
+            content: '确定删除这个图片'
             ,btn: ['删除', '取消']
             ,skin: 'footer'
             ,yes: function(index){
-                layer.open({content: '正在删除'})
+                layer.open({content: '正在删除'});
+                Array.prototype.remove = function(b) {
+                  var a = this.indexOf(b);
+                  if (a >= 0) {
+                  this.splice(a, 1);
+                  return true;
+                  }
+                  return false;
+                };
+                CAR_ALL_IMG.remove(url);
+                var id = location.search.split("id=")[1];
+                var data = {
+                  id : id,
+                  car_all_img:JSON.stringify(CAR_ALL_IMG)
+                }
                 $.ajax({
-                    type: "GET",
-                    url: 'carinfo/delete',
-                    data :  {id : id},
+                    type: "POST",
+                    url: 'carinfo/edit',
+                    data :  data,
                     dataType: "json",
                     success : function(result) {
                         console.log(result);

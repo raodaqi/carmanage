@@ -19,7 +19,8 @@
     "superagent":"2.0.0",
     "lc-build":"1.0.5",
     "api-send":"1.0.2",
-    "connect-multiparty":"2.0.0"
+    "connect-multiparty":"2.0.0",
+    "bluebird":"3.5.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
