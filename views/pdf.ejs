@@ -1,0 +1,389 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>福特</title>
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+  <link href='http://at.alicdn.com/t/font_zdfcqhyvjk29y66r.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="/css/base.css" />
+  <link rel="stylesheet" type="text/css" href="/css/menu.css" />
+  <link href='/css/bootstrap.min.css' rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" href="/css/common.css">
+</head>
+<style>
+  body{
+    /*background: #eeeeef;*/
+    background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+    overflow-y: hidden;
+  }
+  body{
+    position:fixed;
+    height:100%;
+    top:0;
+    bottom:0;
+    width:100%;
+    overflow-y: hidden;
+  }
+  .nav a{
+    text-decoration:none;
+  }
+  .car-li{
+    padding:20px 10px;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.3);
+    position: relative;
+    border-radius: 0.1rem;
+    font-size: 14px;
+    text-align: center;
+    color: #000;
+    margin-bottom: .5rem;
+  }
+  .car-li:visited,.car-li:active{
+    background-color: #eee;
+  }
+  .car-content{
+    margin-top: 80px;
+    width: 100%;
+    box-shadow: border-box;
+    padding:10px;
+  }
+  .codrops-icon,.fa{
+    color: #322930;
+    font-size: 20px;
+  }
+  .fa.add{
+    float: right;
+    /*display: inline-block;*/
+    margin: 0.5em;
+    padding: 0em 0;
+    width: 1.5em;
+    text-decoration: none;
+    margin-top: 16px;
+    display: none;
+  }
+  .do-content{
+    background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+  }
+  .add-content{
+    transform:translateY(100%);
+  }
+  .nav-text{
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top:0;
+    line-height: 48px;
+    color: #000;
+    font-size: 16px;
+    pointer-events:none;
+  }
+  .add-box{
+    padding-top: 40px;
+  }
+  .layui-layer-content {
+    width: 60px;
+    height: 24px;
+    background: url(/layer/skin/default/loading-0.gif) no-repeat;
+    margin: 30px auto;
+  }
+  .search{
+    height: 30px;
+    width: 100%;
+  }
+  .search input{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 10px;
+    border-color: #fff;
+    border: 0;
+    padding:5px 0px;
+    font-size: 10px;
+    text-align: center;
+  }
+</style>
+<body>
+  <div class="do-content content">
+    <div class="nav-box">
+      <div class="nav">
+        <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
+        <div class="nav-text">规格</div>
+        <a class="fa fa-plus add"></a>
+      </div>
+    </div>
+    <div class="car-content-box">
+      <canvas id="the-canvas"></canvas>
+    </div>
+  </div>
+
+  <div class="do-content add-content">
+    <div class="nav">
+      <a class="codrops-icon codrops-icon--prev back"></a>
+      <div class="nav-text">添加规格</div>
+    </div>
+
+    <div class="car-content">
+      <div class="add-box">
+        <form action="" id="addForm">
+            <input type="text" class="form-control" name="name" id="name" placeholder="请填写规格">
+            <button type="button" class="btn btn-warning mt-30 btn-block btn-create">添加</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/layer/mobile/layer.js"></script>
+  <script type="text/javascript" src="/js/common.js"> </script>
+  <script type="text/javascript" src="/js/pdf.js"> </script>
+  <script type="text/javascript" src="/js/pdf.worker.js"> </script>
+  <script>
+  // PDFJS.getDocument('/img/123.pdf');
+  var url = '/img/123.pdf';
+  PDFJS.workerSrc = '/js/pdf.worker.js';
+  // Asynchronous download of PDF
+  var loadingTask = PDFJS.getDocument(url);
+  loadingTask.promise.then(function(pdf) {
+    console.log('PDF loaded');
+    
+    // Fetch the first page
+    var pageNumber = 1;
+    pdf.getPage(pageNumber).then(function(page) {
+      console.log('Page loaded');
+      
+      var scale = 1.5;
+      var viewport = page.getViewport(scale);
+
+      // Prepare canvas using PDF page dimensions
+      var canvas = document.getElementById('the-canvas');
+      var context = canvas.getContext('2d');
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      // Render PDF page into canvas context
+      var renderContext = {
+        canvasContext: context,
+        viewport: viewport
+      };
+      var renderTask = page.render(renderContext);
+      renderTask.then(function () {
+        console.log('Page rendered');
+      });
+    });
+  }, function (reason) {
+    // PDF loading error
+    console.error(reason);
+  });
+
+    $.fn.longPress = function(fn) {
+      var timeout = undefined;
+      var $this = this;
+      console.log($this);
+      for(var i = 0;i<$this.length;i++){
+          $this[i].addEventListener('touchstart', function(event) {
+              timeout = setTimeout(fn, 800);
+              }, false);
+          $this[i].addEventListener('touchend', function(event) {
+              clearTimeout(timeout);
+              }, false);
+      }
+    }
+  </script>
+  <script>
+  function doAddContent(type){
+    if(type == 1){
+      $(".add-content").css({
+        "transform" : "translateY(0%)"
+      })
+    }else{
+      $(".add-content").css({
+        "transform" : "translateY(100%)"
+      })
+    }
+  }
+
+    $(".add").on("click",function(){
+      doAddContent(1);
+    })
+
+    $(".back").on("click",function(){
+      doAddContent();
+    })
+
+    $(".btn-create").on("click",function(){
+      layer.open({
+        type: 2,
+        content: '正在添加'
+      });
+      var data = $("#addForm").serializeArray();
+      data.push({
+        name : "type_id",
+        value : location.search.split("id=")[1]
+      })
+      // data.type_id = location.search.split("id=")[1];
+      console.log(data);
+      carspecAdd(data).then(function(result){
+          layer.closeAll();
+          getList();
+          //提示
+          layer.open({
+            content: '添加成功'
+            ,skin: 'msg'
+            ,time: 2 //2秒后自动关闭
+          });
+          doAddContent();
+
+        },function(error){
+          layer.closeAll();
+          layer.open({
+            content: error.message
+            ,skin: 'msg'
+            ,time: 2 //2秒后自动关闭
+          });
+          console.log(error);
+      })
+    })
+
+    function getList(){
+      //获取当前id
+      var type_id = location.search.split("id=")[1];
+      carspecList({type_id:type_id}).then(function(result){
+          console.log(result);
+          var data = result.data;
+          var list = '';
+          for(var i = 0 ; i < data.length; i++){
+            list += '<div class="car-li" data-id="'+data[i].objectId+'">'+data[i].name+'</div>';
+          }
+
+          if(!data.length){
+            list = '<div class="no-data">暂无数据...</div>';
+          }
+
+          $(".car-list").empty().append(list);
+        },function(error){
+          layer.open({
+            content: error.message
+            ,skin: 'msg'
+            ,time: 2 //2秒后自动关闭
+          });
+          console.log(error);
+      })
+    }
+
+    $(function(){
+      var search = location.search;
+      console.log(search);
+      getList();
+    })
+
+    var timer = undefined;
+    $(document).on("touchstart",".car-li",function(){
+      var $this = $(this);
+      timer = setTimeout(function(){
+        // console.log($this.text());
+        var id = $this.attr("data-id");
+        //底部对话框
+          var manage = $(".nav-text").attr("data-manage");
+          if(manage == 'y'){
+              layer.open({
+                  content: '确定删除这个种类'
+                  ,btn: ['删除', '取消']
+                  ,skin: 'footer'
+                  ,yes: function(index){
+                      layer.open({
+                          type: 2,
+                          content: '正在删除'
+                      });
+                      var  data = {id:id};
+                      // var data = $(this).serializeArray();
+                      // data.push({
+                      //   name : "id",
+                      //   value : id
+                      // });
+                      carspecDelete(data).then(function(result){
+                          layer.closeAll();
+                          getList();
+                          //提示
+                          layer.open({
+                              content: '删除成功'
+                              ,skin: 'msg'
+                              ,time: 2 //2秒后自动关闭
+                          });
+                          $this.remove();
+                      },function(error){
+                          layer.closeAll();
+                          layer.open({
+                              content: error.message
+                              ,skin: 'msg'
+                              ,time: 2 //2秒后自动关闭
+                          });
+                          console.log(error);
+                      })
+                  }
+              });
+          }
+
+      }, 800);
+    }).on('touchend',".car-li",function(event) {
+      clearTimeout(timer);
+    });
+
+    $(".car-list").on("click",".car-li",function(){
+        var data_id = $(this).attr("data-id");
+        var name = $(this).text();
+        var user_id = $(".nav-text").attr("data-id");
+        var data = {
+            type_id : data_id ,
+            name : name ,
+            user_id : user_id
+        }
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: 'history/add',
+            data :  data,
+            dataType: "json",
+            success : function(result) {
+                console.log(result);
+            },
+            error:function(error){
+                console.log(error);
+            }
+        })
+      window.location.href = '/type?spec_id='+data_id;
+    })
+  function getuser() {
+      $.ajax({
+          type: "GET",
+          url: 'user/getUser',
+          data :  {},
+          dataType: "json",
+          success : function(result) {
+              console.log(result);
+              if(result.code == 300){
+                  window.location.href = '/login';
+              }
+              else if(result.code == 200){
+                  $(".nav-text").attr("data-id",result.id);
+                  if(result.data == 'y'){
+                      $(".add").show();
+                      $(".nav-text").attr("data-manage","y");
+                  }
+                  else {
+                      $(".nav-text").attr("data-manage","n");
+                  }
+              }
+          },
+          error:function(error) {
+              console.log(error);
+          }
+      })
+  }
+    // getuser();
+  $(".search input").on("click",function () {
+      window.location.href = '/search';
+  })
+  </script>
+</body>
+</html>

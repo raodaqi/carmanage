@@ -168,6 +168,7 @@ router.get('/list', function(req, res, next) {
 	var query = new AV.Query('CarSpec');
 	query.skip(skip);
 	query.limit(limit);
+	query.equalTo("type_id",data.type_id);
 	query.find().then(function (results) {
 		// 删除成功
 		var result = {
