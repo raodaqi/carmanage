@@ -44,6 +44,7 @@
     background-color: #eee;
   }
   .car-content{
+    margin-top: 80px;
     width: 100%;
     box-shadow: border-box;
     padding:10px;
@@ -105,19 +106,22 @@
 </style>
 <body>
   <div class="do-content content">
-    <div class="nav">
-      <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
-      <div class="nav-text">规格</div>
-      <a class="fa fa-plus add"></a>
-    </div>
+    <div class="nav-box">
+      <div class="nav">
+        <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
+        <div class="nav-text">规格</div>
+        <a class="fa fa-plus add"></a>
+      </div>
 
-    <div class="search">
-      <input placeholder="请输入搜索信息">
+      <div class="search">
+        <input placeholder="请输入搜索信息">
+      </div>
     </div>
-
-    <div class="car-content car-list">
-      <!-- <div class="no-data">暂无数据...</div> -->
-      <div id="" class="layui-layer-content layui-layer-loading0"></div>
+    <div class="car-content-box">
+      <div class="car-content car-list">
+        <!-- <div class="no-data">暂无数据...</div> -->
+        <div id="" class="layui-layer-content layui-layer-loading0"></div>
+      </div>
     </div>
   </div>
 
