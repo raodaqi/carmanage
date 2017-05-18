@@ -91,14 +91,23 @@
     color: #777;
     margin-top: 4px;
   }
+  .do-content{
+    overflow-y: auto;
+    margin-top: 50px;
+  }
+  .nav-box{
+    height: 48px;
+    z-index: 3;
+  }
 </style>
 <body>
-  <div class="do-content content">
-    <div class="nav">
-      <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
-      <div class="nav-text" id="tex">历史记录</div>
+  <div class="nav-box">
+      <div class="nav">
+        <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
+        <div class="nav-text" id="tex">历史记录</div>
+      </div>
     </div>
-
+  <div class="do-content content">
     <div class="car-content car-list">
       <!-- <div class="no-data">暂无数据...</div> -->
       <div id="" class="layui-layer-content layui-layer-loading0"></div>
@@ -197,56 +206,56 @@
     })
 
     var timer = undefined;
-    $(document).on("touchstart",".car-li",function(){
-      var $this = $(this);
-      timer = setTimeout(function(){
-        // console.log($this.text());
-        var id = $this.attr("data-id");
-        //底部对话框
-          var manage = $(".nav-text").attr("data-manage");
-          if(manage == 'y'){
-              layer.open({
-                  content: '确定删除这个种类'
-                  ,btn: ['删除', '取消']
-                  ,skin: 'footer'
-                  ,yes: function(index){
-                      layer.open({
-                          type: 2,
-                          content: '正在删除'
-                      });
-                      var  data = {id:id};
-                      // var data = $(this).serializeArray();
-                      // data.push({
-                      //   name : "id",
-                      //   value : id
-                      // });
-                      carspecDelete(data).then(function(result){
-                          layer.closeAll();
-                          getList();
-                          //提示
-                          layer.open({
-                              content: '删除成功'
-                              ,skin: 'msg'
-                              ,time: 2 //2秒后自动关闭
-                          });
-                          $this.remove();
-                      },function(error){
-                          layer.closeAll();
-                          layer.open({
-                              content: error.message
-                              ,skin: 'msg'
-                              ,time: 2 //2秒后自动关闭
-                          });
-                          console.log(error);
-                      })
-                  }
-              });
-          }
+    // $(document).on("touchstart",".car-li",function(){
+    //   var $this = $(this);
+    //   timer = setTimeout(function(){
+    //     // console.log($this.text());
+    //     var id = $this.attr("data-id");
+    //     //底部对话框
+    //       var manage = $(".nav-text").attr("data-manage");
+    //       if(manage == 'y'){
+    //           layer.open({
+    //               content: '确定删除这个种类'
+    //               ,btn: ['删除', '取消']
+    //               ,skin: 'footer'
+    //               ,yes: function(index){
+    //                   layer.open({
+    //                       type: 2,
+    //                       content: '正在删除'
+    //                   });
+    //                   var  data = {id:id};
+    //                   // var data = $(this).serializeArray();
+    //                   // data.push({
+    //                   //   name : "id",
+    //                   //   value : id
+    //                   // });
+    //                   carspecDelete(data).then(function(result){
+    //                       layer.closeAll();
+    //                       getList();
+    //                       //提示
+    //                       layer.open({
+    //                           content: '删除成功'
+    //                           ,skin: 'msg'
+    //                           ,time: 2 //2秒后自动关闭
+    //                       });
+    //                       $this.remove();
+    //                   },function(error){
+    //                       layer.closeAll();
+    //                       layer.open({
+    //                           content: error.message
+    //                           ,skin: 'msg'
+    //                           ,time: 2 //2秒后自动关闭
+    //                       });
+    //                       console.log(error);
+    //                   })
+    //               }
+    //           });
+    //       }
 
-      }, 800);
-    }).on('touchend',".car-li",function(event) {
-      clearTimeout(timer);
-    });
+    //   }, 800);
+    // }).on('touchend',".car-li",function(event) {
+    //   clearTimeout(timer);
+    // });
 
     $(".car-list").on("click",".car-li",function(){
         var data_id = $(this).attr("data-id");

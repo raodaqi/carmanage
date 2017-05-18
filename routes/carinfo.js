@@ -59,28 +59,26 @@ router.post('/fileup',multipartMiddleware, function(req, res, next){
 })
 
 function saveFile(i,fileArray,filePartData,callback){
-		if(i >= fileArray.length){
-			return callback.success(filePartData);
+		if(i >= fileArray.length){//判断是否是最后一个文件
+			return callback.success(filePartData);//返回成功上传
 		}
-		var fileData = fileArray[i];
-		// console.log(fileData);
-		fs.readFile(fileData.path, function(err, data){
-	        if(err){
-						var data = "读取文件失败";
-						return callback.error(data);
-					}
-	        var base64Data = data.toString('base64');
-	        var theFile = new AV.File(fileData.name, {base64: base64Data});
-	        theFile.save().then(function(theFileData){
-							// console.log(theFileData);
-	        		var url = theFileData.attributes.url;
-							filePartData[fileData.fieldName] = url;
-							saveFile(i+1,fileArray,filePartData,callback);
+		var fileData = fileArray[i];//获取一个文件信息
+		fs.readFile(fileData.path, function(err, data){//读取文件
+	        if(err){//读取失败判断
+				var data = "读取文件失败";
+				return callback.error(data);//返回读取失败
+			}
+	        var base64Data = data.toString('base64');//将文件转为base64
+	        var theFile = new AV.File(fileData.name, {base64: base64Data});//新建文件信息
+	        theFile.save().then(function(theFileData){//保存文件信息
+	        	var url = theFileData.attributes.url;//获取成功保存后的文件链接
+				filePartData[fileData.fieldName] = url;//将文件name保存到数据
+				saveFile(i+1,fileArray,filePartData,callback);//递归代用该方法
 	        },function(error){
-						console.log(error);
-					});
+				console.log(error);
+				return callback.error(data);//返回保存失败
+			});
 	    });
-		// });
 }
 
 // 新增

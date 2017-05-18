@@ -18,33 +18,27 @@ function sendError(res,code,message){
 }
 
 function validate(res,req,data){
-
-	// if(!AS.add(req,data)){
-	// 	res.send("123");
-	// 	return;
-	// }
-
-	for(var i in data){
-		if(req.method == 'GET'){
-			var value = req.query[i];
+	for(var i in data){	//遍历所有上传数据
+		if(req.method == 'GET'){	//判断GET类型
+			var value = req.query[i];	//获取GET请求的值
 		}else{
-			var value = req.body[i];
+			var value = req.body[i]; //获取POST请求的值
 		}
-		if(data[i]){
+		if(data[i]){ //如果这个键值存在描述，就为必须值
 			//必须值
-			if(!value){
-				var result = {
+			if(!value){ //是必须值，但为空
+				var result = { //设置报错返回值
 					code : '302',
 					message : '缺少'+data[i],
 					data : []
 				}
-				res.send(result);
-				return '';
+				res.send(result); //返回给前端
+				return ''; //返回函数
 			}
 		}
-		data[i] = value;
+		data[i] = value; //将data的描述值改为前端对应的值
 	}
-	return data;
+	return data; //返回函数值
 }
 // var currentUser = AV.User.current();
 

@@ -7,35 +7,36 @@
 function sendQuery(url,type,data,para){
    var dfd = $.Deferred(); // 生成Deferred对象
    //兼容form序列化数据提交
-   if(data.length){
-       var newData = {};
-       for(var i = 0; i < data.length;i++){
-           newData[data[i].name] = data[i].value;
+   if(data.length){//判断data是不是数组
+       var newData = {};//新建json对象
+       for(var i = 0; i < data.length;i++){//遍历data数组
+           newData[data[i].name] = data[i].value;//将数组转化为json对象
        }
-       data = newData;
+       data = newData;//将数组转化为json对象
    }
    //判断值是否为空
-   for(var i in para){
-       if(para[i] && !data[i]){
+   for(var i in para){//遍历必须值json
+       if(para[i] && !data[i]){//
            var result = {
                code:302,
                message:"缺少"+i,
                data:[]
            }
-           dfd.reject(result);
-           return dfd;
+           dfd.reject(result);//将dtd对象的执行状态从"未完成"改为"已失败"
+           return dfd;//返回dfd对象
        }
    }
+   //发送ajax请求
    $.ajax({
-       type: type,
-       url: url,
-       data: data,
-       dataType: "json"
+       type: type,//请求类型
+       url: url,//请求链接
+       data: data,//请求数据
+       dataType: "json"//请求数据类型
        }).then(function(result){
            if(result.code == 200){
-               dfd.resolve(result);
+               dfd.resolve(result);//将dtd对象的执行状态从"未完成"改为"已完成"
            }else{
-               dfd.reject(result);
+               dfd.reject(result);//将dtd对象的执行状态从"未完成"改为"已失败"
            }
        },function(error){
            var result = {
@@ -43,9 +44,10 @@ function sendQuery(url,type,data,para){
                message:"服务器出错",
                data:[]
            }
-           dfd.reject(result);
+           dfd.reject(result);//将dtd对象的执行状态从"未完成"改为"已失败"
        })
-   return dfd;}
+   return dfd;//返回dfd对象
+}
 /*!
  *carDelete
  *id(String) :id 必须值
