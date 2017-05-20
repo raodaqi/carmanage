@@ -229,6 +229,11 @@
         .car-spec{
           width: 100%;
         }
+        .canvas-content{
+          overflow: auto;
+          overflow-y: auto;
+          height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -255,7 +260,11 @@
         </div>
     </div>
     <div class="do-content car-spec-content">
-        <img src="" class="car-spec" alt="">
+        <!-- <img src="" class="car-spec" alt=""> -->
+        <div class="canvas-content">
+          <canvas id="the-canvas"></canvas>
+        </div>
+        
     </div>
     <div class="do-content add-content">
         <div class="nav">
@@ -283,6 +292,8 @@
     <script type="text/javascript" src="/js/swiper.js"></script>
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/layer/mobile/layer.js"></script>
+    <script type="text/javascript" src="/js/pdf.js"> </script>
+    <script type="text/javascript" src="/js/pdf.worker.js"> </script>
 
     <!-- Initialize Swiper -->
     <script>
@@ -398,7 +409,49 @@
                var str1 = '';
                var j;
                CAR_ALL_IMG = data.car_all_img ? data.car_all_img : CAR_ALL_IMG;
-               $(".car-spec").attr("src",data.car_spec);
+               // $(".car-spec").attr("src",data.car_spec);
+
+               // PDFJS.getDocument('/img/123.pdf');
+              var url = data.car_spec;
+              PDFJS.workerSrc = '/js/pdf.worker.js';
+              // Asynchronous download of PDF
+              var loadingTask = PDFJS.getDocument(url);
+              loadingTask.promise.then(function(pdf) {
+                console.log('PDF loaded');
+                // Fetch the first page
+                var pageNumber = 1;
+                pdf.getPage(pageNumber).then(function(page) {
+                  console.log('Page loaded');
+                  
+                  var scale = 1.5;
+                  var viewport = page.getViewport(scale);
+
+                  // Prepare canvas using PDF page dimensions
+                  var canvas = document.getElementById('the-canvas');
+                  var context = canvas.getContext('2d');
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+
+                  //设置canvas-content高度
+                  // $(".canvas-content").css({
+                  //   "height":viewport.height
+                  // })
+
+                  // Render PDF page into canvas context
+                  var renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                  };
+                  var renderTask = page.render(renderContext);
+                  renderTask.then(function () {
+                    console.log('Page rendered');
+                  });
+                });
+              }, function (reason) {
+                // PDF loading error
+                console.error(reason);
+              });
+
                for(var i = 0;i < CAR_ALL_IMG.length;i++){
                     str +='<div class="swiper-slide" data-url="'+CAR_ALL_IMG[i]+'" style="background-image:url('+CAR_ALL_IMG[i]+')" data-swiper-slide-index="'+i+'">'+del+'</div>';
                     str1 +='<div class="swiper-slide" style="background-image:url('+CAR_ALL_IMG[i]+')" data-swiper-slide-index="'+i+'"></div>';

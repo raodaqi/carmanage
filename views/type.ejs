@@ -204,6 +204,9 @@
           width: 100%;
           height: 100%;
         }
+        .btn-file-add{
+          display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -242,10 +245,15 @@
                     </div>
                     <input type="text" class="form-control" name="discount" id="discount" placeholder="请输入优惠信息">
                     <input type="text" class="form-control mt-10" name="num" id="num" placeholder="请输入车辆库存">
-                    <div class="addp mt-15">
+                    <!-- <div class="addp mt-15">
                       <input type="file" class="form-control" name="car_spec" id="car_spec" placeholder="添加配置图片" onchange="preview(this)" style="display:none">
                       <div class="add-pho-text">添加配置图片：</div>
                       <img src="img/pho.png" class="addpho">
+                    </div> -->
+                    <div class="addp mt-15">
+                      <div class="add-pho-text">添加配置文件：<span class="add-pho-text-name"></span></div>
+                      <input type="file" class="form-control" name="car_spec" id="car_spec" placeholder="添加配置文件" style="display:none" onchange="showName(this)">
+                      <button type="button" class="btn btn-info mt-40 btn-block btn-file-add">添加配置文件</button>
                     </div>
                     <button type="button" class="btn btn-warning mt-30 btn-block btn-create">添加</button>
                 </form>
@@ -317,6 +325,10 @@
       doAddContent(1);
     })
 
+    function showName(file){
+      $(".add-pho-text-name").text($(file).val())
+    }
+
     $(".back").on("click",function(){
       doAddContent();
     })
@@ -333,8 +345,12 @@
         }
     }
 
+    $(".btn-file-add").on("click",function(){
+      $(this).parent().find("input").click();
+    })
+
     $(".addpho").on("click",function(){
-        $(this).parent().find("input").click();
+      $(this).parent().find("input").click();
     })
     function getList(){
       //获取当前id
