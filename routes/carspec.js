@@ -52,7 +52,8 @@ var CarSpec = AV.Object.extend('CarSpec');
 router.post('/add', function(req, res, next) {
 	var data = {
 		type_id : "类型id",
-		name    : "规格名称"
+		name    : "规格名称",
+		price   : "价格"
     }
 	var data = validate(res,req,data);
 	if(!data){
@@ -126,7 +127,8 @@ router.get('/delete', function(req, res, next) {
 // 编辑
 router.post('/edit', function(req, res, next) {
 	var data = {
-		id  : 'id'
+		id  : 'id',
+		price : "价格"
     }
 	var data = validate(res,req,data);
 	if(!data){

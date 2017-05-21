@@ -302,6 +302,69 @@ router.get('/list', function(req, res, next) {
 	}).catch(next);
 })
 
+function saveData(i,spec_data,spec_id_do,callback){
+	if(i >= spec_data.length){
+		//
+		console.log("操作成功");
+		callback.success();
+		return;
+	}
+	var addObj = new CarInfo();
+	for(var key in spec_data[i].attributes){
+		addObj.set(key,spec_data[i].attributes[key]);
+	}
+	addObj.set("spec_id",spec_id_do);
+	addObj.save().then(function (addResult) {
+		console.log("保存成功");
+		saveData(i+1,spec_data,spec_id_do,callback);
+	}, function (error) {
+		console.log("保存失败");
+	});
+}
+
+//通过规格id添加到其他规格内
+function doCopy(spec_id,spec_id_do,callback){
+	var query = new AV.Query('CarInfo');
+	query.equalTo("spec_id",spec_id);
+	query.find().then(function (results) {
+		// 删除成功
+		// console.log(results);
+		saveData(0,results,spec_id_do,callback)
+	}, function(error) {
+		res.send(error);
+	});
+}
+// doCopy("59140a66a0bb9f005fc761b9","59140b2a44d904006c3d418a");
+
+function copyType(i,spec_data,spec_id){
+	if(i >= spec_data.length){
+		//
+		return;
+	}
+	if(spec_id == spec_data[i].id){
+		copyType(i+1,spec_data,spec_id);
+		return;
+	}
+	doCopy(spec_id,spec_data[i].id,{
+		success:function(){
+			copyType(i+1,spec_data,spec_id);
+		}
+	})
+}
+
+//直接获取种类
+function doType(type_id,spec_id){
+	var query = new AV.Query('CarSpec');
+	query.equalTo("type_id",type_id);
+	query.find().then(function (results) {
+		// 删除成功
+		copyType(0,results,spec_id);
+	}, function(error) {
+		console.log(error);
+	});
+}
+// doType("591406c044d904006c3d14af","59210797a22b9d005876d1d6");
+
 // 详情
 router.get('/detail', function(req, res, next) {
 	var data = {

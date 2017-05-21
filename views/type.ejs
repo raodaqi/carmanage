@@ -123,30 +123,33 @@
          position: absolute;
          height: auto;
          padding: 10px;
-         filter:alpha(opacity=50);
-         -moz-opacity:0.5;
-         -khtml-opacity: 0.5;
-         opacity: 0.5;
+         filter:alpha(opacity=70);
+         -moz-opacity:0.7;
+         -khtml-opacity: 0.7;
+         opacity: 0.7;
          background-color: #000;
          color: #fff;
          bottom: 20px;
          z-index: 22;
          width: 100%;
      }
-    .num{
+    .num,.price{
         position: absolute;
-        height: 20px;
         line-height: 20px;
         padding-left: 10px;
-        filter:alpha(opacity=50);
-        -moz-opacity:0.5;
-        -khtml-opacity: 0.5;
-        opacity: 0.5;
+        filter:alpha(opacity=70);
+        -moz-opacity:0.7;
+        -khtml-opacity: 0.7;
+        opacity: 0.7;
         background-color: #000;
         color: #fff;
         bottom: 0;
         z-index: 22;
         width: 100%;
+    }
+    .price{
+      bottom:60px;
+      line-height: 25px;
     }
     .form-control{
         text-align: center;
@@ -214,7 +217,7 @@
     <div class="do-content content">
         <div class="nav">
           <a href="javascript:history.go(-1)" class="codrops-icon codrops-icon--prev"></a>
-          <div class="nav-text">测试规格</div>
+          <div class="nav-text">车辆管理</div>
           <a class="fa fa-plus add"></a>
         </div>
         <div class="swiper-container gallery-top">
@@ -352,6 +355,31 @@
     $(".addpho").on("click",function(){
       $(this).parent().find("input").click();
     })
+    //获取价格
+    function getDetail(){
+      var spec_id = location.search.split("spec_id=")[1];
+      $.ajax({
+           type: "GET",
+           url: 'carspec/detail',
+           data: {id : spec_id},
+           dataType: "json",
+           success : function(result) {
+               console.log(result);
+               //获取价格
+               var price = result.data.price ? result.data.price : "23.68";
+               $(".price span").text(price+"万");
+           },
+           error : function(error){
+                layer.open({
+                    content: error.message
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+                console.log(error);
+           }
+       });
+    }
+
     function getList(){
       //获取当前id
         var spec_id = location.search.split("spec_id=")[1];
@@ -375,13 +403,14 @@
                for(var i = 0;i < data.length;i++){
                   if(data[i].spec_id == spec_id){
                     j = i+1;
-                    str +='<div class="swiper-slide" data-id="'+data[i].objectId+'" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'">'+del+'<div class="discount">优惠信息：'+data[i].discount+'</div><div class="swiper-slide-click" data-id="'+data[i].objectId+'"></div><div class="num">车辆库存：'+data[i].num+'</div> </div>';
+                    str +='<div class="swiper-slide" data-id="'+data[i].objectId+'" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'">'+del+'<div class="discount">优惠信息：'+data[i].discount+'</div><div class="swiper-slide-click" data-id="'+data[i].objectId+'"></div><div class="num">车辆库存：'+data[i].num+'</div><div class="price">车辆价格：<span></span></div> </div>';
                     str1 +='<div class="swiper-slide" style="background-image:url('+data[i].url+')" data-swiper-slide-index="'+j+'"></div>';
                   }
                }
                // console.log(str);
                $("#wrapper1").append(str);
                $("#wrapper2").append(str1);
+               getDetail();
                galleryTop.update(true);
                galleryThumbs.update(true);
            },

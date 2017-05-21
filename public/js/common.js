@@ -220,7 +220,8 @@ function carspecEdit(data){
    var url = "/carspec/edit";
    var type = "POST";
    var para = {
-    id : 1
+    id : 1,
+    price : 1
    }
    return sendQuery(url,type,data,para);
 }

@@ -138,6 +138,7 @@
       <div class="add-box">
         <form action="" id="addForm">
             <input type="text" class="form-control" name="name" id="name" placeholder="请填写规格">
+            <input type="text" class="form-control mt-10" name="price" id="price" placeholder="请填写价格">
             <button type="button" class="btn btn-warning mt-30 btn-block btn-create">添加</button>
         </form>
       </div>
@@ -182,7 +183,43 @@
       doAddContent();
     })
 
+    var specId = '';
+
     $(".btn-create").on("click",function(){
+
+      if($(this).text() == "更改"){
+        layer.open({
+          type: 2,
+          content: '正在更改'
+        });
+        var data = $("#addForm").serializeArray();
+        data.push({
+          name : "id",
+          value : specId
+        })
+        console.log(data);
+        carspecEdit(data).then(function(result){
+            layer.closeAll();
+            getList();
+            //提示
+            layer.open({
+              content: '添加成功'
+              ,skin: 'msg'
+              ,time: 2 //2秒后自动关闭
+            });
+            doAddContent();
+
+          },function(error){
+            layer.closeAll();
+            layer.open({
+              content: error.message
+              ,skin: 'msg'
+              ,time: 2 //2秒后自动关闭
+            });
+            console.log(error);
+        })
+        return;
+      }
       layer.open({
         type: 2,
         content: '正在添加'
@@ -301,6 +338,11 @@
     });
 
     $(".car-list").on("click",".car-li",function(){
+      // var data_id = $(this).attr("data-id");
+      // specId = data_id;
+      // $(".btn-create").text("更改");
+      // doAddContent(1);
+      //   return;
         var data_id = $(this).attr("data-id");
         var name = $(this).text();
         var user_id = $(".nav-text").attr("data-id");
